@@ -707,3 +707,26 @@
     transform: translate(-50%, 0);
   }
 }
+
+@media (max-width: 600px) {
+  .card-modal-container {
+    max-height: 98vh;
+    border-radius: 16px;
+  }
+  .card-modal-header {
+    padding: 12px 14px;
+  }
+  .card-modal-title {
+    font-size: 15px;
+  }
+  .card-preview-area {
+    padding: 14px 10px;
+  }
+  .greeting-card-canvas {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+  .card-controls-area {
+    padding: 14px 12px;
+  }
+}

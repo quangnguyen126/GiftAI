@@ -622,157 +622,162 @@ function App() {
           </nav>
 
           <div className="header-actions">
-            <button
-              className="memory-box-header-btn"
-              onClick={() => handleOpenMemoryBoxModal()}
-              title="Tạo Hộp Quà Kỷ Niệm Ảo 3D, đếm ngược ngày kỷ niệm & xuất Story 9:16 có mã QR"
-            >
-              🎁 Hộp Kỷ Niệm <span className="nav-badge-new">MỚI</span>
-            </button>
-
-            <button
-              className="create-card-header-btn"
-              onClick={() => handleOpenCardModal()}
-              title="Tạo thiệp chúc mừng với phông nền có sẵn & lời chúc AI"
-            >
-              💌 Tạo thiệp chúc
-            </button>
-
-            <button
-              className="favorites-header-btn"
-              onClick={() => {
-                if (!user) {
-                  setAuthModalTab("login");
-                  setAuthModalOpen(true);
-                } else {
-                  setFavoritesModalOpen(true);
-                }
-              }}
-              title="Xem danh sách quà yêu thích đã lưu & gợi ý đòi quà người yêu"
-            >
-              ❤️ Quà đã lưu {user && favoriteNames.size > 0 ? `(${favoriteNames.size})` : ""}
-            </button>
-
-            <button
-              className="icon-button"
-              onClick={() => {
-                document.getElementById("searchInput")?.focus();
-              }}
-            >
-              🔍
-            </button>
-
-            {/* Nút vào trang Admin nếu là Admin */}
-            {user && user.role === "admin" && (
+            <div className="header-feature-pills">
               <button
-                className="admin-header-badge-btn"
-                onClick={() => setViewMode("admin")}
-                title="Vào trang quản trị hệ thống GiftAI"
+                className="memory-box-header-btn"
+                onClick={() => handleOpenMemoryBoxModal()}
+                title="Tạo Hộp Quà Kỷ Niệm Ảo 3D, đếm ngược ngày kỷ niệm & xuất Story 9:16 có mã QR"
               >
-                👑 Quản trị
+                🎁 Hộp Kỷ Niệm <span className="nav-badge-new">MỚI</span>
               </button>
-            )}
 
-            {/* Menu người dùng hoặc nút Đăng nhập / Đăng ký */}
-            {user ? (
-              <div className="user-menu-wrapper">
-                <button
-                  className="user-profile-btn"
-                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                >
-                  <div className="user-avatar-small">
-                    {user.full_name ? user.full_name.charAt(0).toUpperCase() : "U"}
-                  </div>
-                  <span className="user-name-small">{user.full_name}</span>
-                  <span style={{ fontSize: "10px", color: "#64748b" }}>▼</span>
-                </button>
+              <button
+                className="create-card-header-btn"
+                onClick={() => handleOpenCardModal()}
+                title="Tạo thiệp chúc mừng với phông nền có sẵn & lời chúc AI"
+              >
+                💌 Tạo thiệp chúc
+              </button>
 
-                {userDropdownOpen && (
-                  <div className="user-menu-dropdown">
-                    <div className="user-menu-info">
-                      <div className="user-menu-name">{user.full_name}</div>
-                      <div className="user-menu-email">{user.email}</div>
-                      <span className={`user-menu-role ${user.role}`}>
-                        {user.role === "admin" ? "👑 Quản trị viên" : "👤 Thành viên"}
-                      </span>
-                    </div>
-
-                    <button
-                      className="user-menu-item"
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        setHistoryModalOpen(true);
-                      }}
-                    >
-                      📜 Lịch sử gợi ý quà
-                    </button>
-
-                    <button
-                      className="user-menu-item"
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        setMyMemoryBoxesOpen(true);
-                      }}
-                    >
-                      🎁 Hộp quà kỷ niệm của tôi
-                    </button>
-
-                    <button
-                      className="user-menu-item"
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        setFavoritesModalOpen(true);
-                      }}
-                    >
-                      ❤️ Quà đã lưu
-                    </button>
-
-                    {user.role === "admin" && (
-                      <button
-                        className="user-menu-item admin-link"
-                        onClick={() => {
-                          setUserDropdownOpen(false);
-                          setViewMode("admin");
-                        }}
-                      >
-                        👑 Trang Quản Trị
-                      </button>
-                    )}
-
-                    <button
-                      className="user-menu-item logout"
-                      onClick={() => {
-                        setUserDropdownOpen(false);
-                        handleLogout();
-                      }}
-                    >
-                      🚪 Đăng xuất
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="auth-header-actions">
-                <button
-                  className="auth-login-btn"
-                  onClick={() => {
+              <button
+                className="favorites-header-btn"
+                onClick={() => {
+                  if (!user) {
                     setAuthModalTab("login");
                     setAuthModalOpen(true);
-                  }}
-                >
-                  Đăng nhập
-                </button>
+                  } else {
+                    setFavoritesModalOpen(true);
+                  }
+                }}
+                title="Xem danh sách quà yêu thích đã lưu & gợi ý đòi quà người yêu"
+              >
+                ❤️ Quà đã lưu {user && favoriteNames.size > 0 ? `(${favoriteNames.size})` : ""}
+              </button>
+            </div>
+
+            <div className="header-auth-actions-group">
+              <button
+                className="icon-button header-search-btn"
+                onClick={() => {
+                  document.getElementById("searchInput")?.focus();
+                }}
+                title="Tìm kiếm quà tặng"
+              >
+                🔍
+              </button>
+
+              {/* Nút vào trang Admin nếu là Admin */}
+              {user && user.role === "admin" && (
                 <button
-                  className="auth-register-btn"
-                  onClick={() => {
-                    setAuthModalTab("register");
-                    setAuthModalOpen(true);
-                  }}
+                  className="admin-header-badge-btn"
+                  onClick={() => setViewMode("admin")}
+                  title="Vào trang quản trị hệ thống GiftAI"
                 >
-                  Đăng ký
+                  👑 Quản trị
                 </button>
-              </div>
-            )}
+              )}
+
+              {/* Menu người dùng hoặc nút Đăng nhập / Đăng ký */}
+              {user ? (
+                <div className="user-menu-wrapper">
+                  <button
+                    className="user-profile-btn"
+                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  >
+                    <div className="user-avatar-small">
+                      {user.full_name ? user.full_name.charAt(0).toUpperCase() : "U"}
+                    </div>
+                    <span className="user-name-small">{user.full_name}</span>
+                    <span style={{ fontSize: "10px", color: "#64748b" }}>▼</span>
+                  </button>
+
+                  {userDropdownOpen && (
+                    <div className="user-menu-dropdown">
+                      <div className="user-menu-info">
+                        <div className="user-menu-name">{user.full_name}</div>
+                        <div className="user-menu-email">{user.email}</div>
+                        <span className={`user-menu-role ${user.role}`}>
+                          {user.role === "admin" ? "👑 Quản trị viên" : "👤 Thành viên"}
+                        </span>
+                      </div>
+
+                      <button
+                        className="user-menu-item"
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          setHistoryModalOpen(true);
+                        }}
+                      >
+                        📜 Lịch sử gợi ý quà
+                      </button>
+
+                      <button
+                        className="user-menu-item"
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          setMyMemoryBoxesOpen(true);
+                        }}
+                      >
+                        🎁 Hộp quà kỷ niệm của tôi
+                      </button>
+
+                      <button
+                        className="user-menu-item"
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          setFavoritesModalOpen(true);
+                        }}
+                      >
+                        ❤️ Quà đã lưu
+                      </button>
+
+                      {user.role === "admin" && (
+                        <button
+                          className="user-menu-item admin-link"
+                          onClick={() => {
+                            setUserDropdownOpen(false);
+                            setViewMode("admin");
+                          }}
+                        >
+                          👑 Trang Quản Trị
+                        </button>
+                      )}
+
+                      <button
+                        className="user-menu-item logout"
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          handleLogout();
+                        }}
+                      >
+                        🚪 Đăng xuất
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="auth-header-actions">
+                  <button
+                    className="auth-login-btn"
+                    onClick={() => {
+                      setAuthModalTab("login");
+                      setAuthModalOpen(true);
+                    }}
+                  >
+                    Đăng nhập
+                  </button>
+                  <button
+                    className="auth-register-btn"
+                    onClick={() => {
+                      setAuthModalTab("register");
+                      setAuthModalOpen(true);
+                    }}
+                  >
+                    Đăng ký
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>

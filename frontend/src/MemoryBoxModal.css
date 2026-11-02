@@ -1133,3 +1133,31 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .memory-box-modal-card {
+    border-radius: 16px;
+    max-height: 98vh;
+  }
+  .box-modal-header {
+    padding: 12px 14px;
+  }
+  .box-modal-header h3 {
+    font-size: 15px;
+  }
+  .step-indicator {
+    padding: 8px 10px;
+    gap: 4px;
+    overflow-x: auto;
+  }
+  .step-node {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+  .box-modal-body {
+    padding: 14px 12px;
+  }
+  .box-modal-footer {
+    padding: 12px 14px;
+  }
+}
