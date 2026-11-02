@@ -1281,17 +1281,19 @@ function evaluateProductForGoals(row, goals = null, cleanItems = [], searchQueri
 
   if (recipientCode === "female_partner" || recipientCode === "female_peer") {
     const blockedCatsForYoungFemale = new Set([
-      "Phụ Kiện Nam",
-      "Đồng Hồ & Phụ Kiện Nam",
-      "Nước Hoa Nam",
-      "Chăm Sóc Nam Giới",
-      "Thời Trang Nam",
-      ...(occasionCode === "christmas" ? [] : ["Thời Trang & Quà Mẹ"]),
-      ...(occasionCode === "tet" ? [] : ["Quà Sức Khỏe Cao Cấp", "Sức Khỏe & Gia Đình", "Gia Dụng & Trà Đạo", "Trà & Sức Khỏe"]),
-      "Quà Tân Gia & Gia Dụng",
+      "phụ kiện nam",
+      "đồng hồ & phụ kiện nam",
+      "nước hoa nam",
+      "chăm sóc nam giới",
+      "thời trang nam",
+      ...(occasionCode === "christmas" ? [] : ["thời trang & quà mẹ"]),
+      ...(occasionCode === "tet"
+        ? []
+        : ["quà sức khỏe cao cấp", "sức khỏe & gia đình", "gia dụng & trà đạo", "trà & sức khỏe"]),
+      "quà tân gia & gia dụng",
     ]);
     if (
-      blockedCatsForYoungFemale.has(effectiveCategory) &&
+      blockedCatsForYoungFemale.has(catLower) &&
       (!goals?.explicitItems || goals.explicitItems.length === 0)
     ) {
       return { suitable: false, reason: "wrong_category_for_female_partner" };
@@ -1303,9 +1305,11 @@ function evaluateProductForGoals(row, goals = null, cleanItems = [], searchQueri
       "nam giới",
       "phái mạnh",
       "ví nam",
+      "ví da nam",
       "bóp nam",
       "bóp da nam",
       "thắt lưng nam",
+      "thắt lưng da nam",
       "dây nịt nam",
       "đồng hồ nam",
       "nước hoa nam",
@@ -1326,19 +1330,19 @@ function evaluateProductForGoals(row, goals = null, cleanItems = [], searchQueri
     }
   } else if (recipientCode === "male_partner" || recipientCode === "male_peer" || effectiveGender === "Nam") {
     const blockedCatsForMale = new Set([
-      "Quà 20/10 & 8/3",
-      "Mỹ Phẩm & Làm Đẹp",
-      "Trang Sức & Phụ Kiện Nữ",
-      "Nước Hoa & Làm Đẹp",
-      "Thời Trang Nữ",
-      "Thời Trang & Quà Mẹ",
-      "Gấu Bông & Quà Cute",
-      "Nến Thơm & Thư Giãn",
-      "Chăm Sóc Sức Khỏe",
-      "Hoa & Quà Lãng Mạn",
+      "quà 20/10 & 8/3",
+      "mỹ phẩm & làm đẹp",
+      "trang sức & phụ kiện nữ",
+      "nước hoa & làm đẹp",
+      "thời trang nữ",
+      "thời trang & quà mẹ",
+      "gấu bông & quà cute",
+      "nến thơm & thư giãn",
+      "chăm sóc sức khỏe",
+      "hoa & quà lãng mạn",
     ]);
     if (
-      blockedCatsForMale.has(effectiveCategory) &&
+      blockedCatsForMale.has(catLower) &&
       (!goals?.explicitItems || goals.explicitItems.length === 0)
     ) {
       return { suitable: false, reason: "wrong_category_for_male" };
@@ -1599,27 +1603,53 @@ function evaluateProductForGoals(row, goals = null, cleanItems = [], searchQueri
   }
 
   // 2. Khớp danh mục mục tiêu (Goal Category)
+  const normEffectiveCat = normalizeKeyword(effectiveCategory);
+  const normGoalCategories = goalCategories.map((c) => normalizeKeyword(c));
   const isGoalCategory =
-    goalCategories.length > 0 && goalCategories.includes(effectiveCategory);
-  if (isGoalCategory) {
-    const catRank = goalCategories.indexOf(effectiveCategory);
-    relevance += Math.max(28, 52 - catRank * 3);
-  } else if (goalCategories.length > 0 && !matchedExplicit) {
-    // Nếu đã có danh mục mục tiêu cho đối tượng/dịp này mà sản phẩm không thuộc danh mục mục tiêu -> loại bỏ để không bao giờ lọt quà lệch tông!
-    return { suitable: false, reason: "not_in_goal_categories" };
-  }
+    normGoalCategories.length > 0 &&
+    normGoalCategories.some(
+      (c) =>
+        c === normEffectiveCat ||
+        normEffectiveCat.includes(c) ||
+        c.includes(normEffectiveCat) ||
+        (c.includes("mỹ phẩm") && normEffectiveCat.includes("mỹ phẩm")) ||
+        (c.includes("trang sức") && normEffectiveCat.includes("trang sức")) ||
+        (c.includes("thời trang") && normEffectiveCat.includes("thời trang")) ||
+        (c.includes("nước hoa") && normEffectiveCat.includes("nước hoa")) ||
+        (c.includes("gấu bông") &&
+          (normEffectiveCat.includes("thú bông") ||
+            normEffectiveCat.includes("gấu bông") ||
+            normEffectiveCat.includes("đồ chơi"))) ||
+        (c.includes("nến thơm") &&
+          (normEffectiveCat.includes("nến") ||
+            normEffectiveCat.includes("đời sống"))) ||
+        (c.includes("lưu niệm") && normEffectiveCat.includes("lưu niệm")),
+    );
 
   // 3. Khớp danh sách món quà gợi ý (cleanItems & goalItems) ngay trong TÊN SẢN PHẨM
   const allTargetItems = Array.from(new Set([...cleanItems, ...goalItems]));
+  let matchedTargetItem = false;
   for (const item of allTargetItems) {
     if (!item) continue;
     if (matchesItemKeyword(nameLower, item)) {
       relevance += 32;
       matchedItems.push(item);
+      matchedTargetItem = true;
     } else if (matchesItemKeyword(kwLower, item)) {
       relevance += 12;
       matchedItems.push(item);
+      matchedTargetItem = true;
     }
+  }
+
+  if (isGoalCategory) {
+    const catRank = normGoalCategories.findIndex(
+      (c) => normEffectiveCat.includes(c) || c.includes(normEffectiveCat),
+    );
+    relevance += Math.max(28, 52 - (catRank >= 0 ? catRank : 3) * 3);
+  } else if (goalCategories.length > 0 && !matchedExplicit && !matchedTargetItem) {
+    // Chỉ loại bỏ khi không thuộc danh mục mục tiêu VÀ không khớp bất kỳ món đồ mục tiêu nào
+    return { suitable: false, reason: "not_in_goal_categories" };
   }
 
   // 4. Điểm thưởng khi tên sản phẩm khớp trực tiếp Dịp tặng
