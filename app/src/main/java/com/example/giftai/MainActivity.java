@@ -27,11 +27,10 @@ public class MainActivity extends AppCompatActivity {
     // =========================================================================
     // CẤU HÌNH ĐỊA CHỈ TRUY CẬP (APP URL)
     // =========================================================================
-    // - Khi chạy trên máy ảo Android kết nối server trên máy tính:
-    //   Máy ảo coi máy tính host là IP 10.0.2.2 (VD: "http://10.0.2.2:5173")
-    // - Khi bạn đã deploy lên Vercel: điền link Vercel vào đây (VD: "https://giftai.vercel.app")
+    // Đã liên kết trực tiếp với trang web chính thức trên Vercel:
+    // https://gift-ai-gilt.vercel.app/ (Hoạt động độc lập 24/7, không cần bật máy tính)
     // =========================================================================
-    public static final String APP_URL = "http://10.0.2.2:5173";
+    public static final String APP_URL = "https://gift-ai-gilt.vercel.app/";
 
     private WebView webView;
     private ProgressBar progressBar;
@@ -132,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 super.onReceivedError(view, request, error);
                 if (request.isForMainFrame()) {
                     String failedUrl = request.getUrl().toString();
-                    // Nếu kết nối tới dev server 10.0.2.2 thất bại, tự động chuyển sang bản web tích hợp sẵn trong App
-                    if (failedUrl.contains("10.0.2.2") && !failedUrl.startsWith("file://")) {
+                    // Nếu mất mạng hoặc không kết nối được online, tự động mở bản web offline tích hợp sẵn trong App
+                    if (!failedUrl.startsWith("file://")) {
                         view.loadUrl("file:///android_asset/www/index.html");
                         return;
                     }
