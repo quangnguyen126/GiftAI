@@ -1,23 +1,36 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --font-sans: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --text: #374151;
+  --text-h: #111827;
+  --text-muted: #6b7280;
+  --text-subtle: #9ca3af;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
+  --bg: #fffbfb;
+  --bg-card: #ffffff;
+  --border: #fce4ec;
+  --border-soft: #f4e8eb;
+
+  --primary: #ff5c7c;
+  --primary-hover: #ff4367;
+  --primary-gradient: linear-gradient(135deg, #ff6b8b 0%, #ff8ea3 100%);
+  --primary-light: #fff0f3;
+  --primary-border: #ffd5dd;
+
+  --accent-mint: #e6fcf5;
+  --accent-mint-text: #0ca678;
+  --accent-peach: #fff4e6;
+  --accent-peach-text: #f76707;
+  --accent-purple: #f3f0ff;
+  --accent-purple-text: #7950f2;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-cute: 0 10px 28px rgba(255, 92, 124, 0.08);
+  --shadow-hover: 0 14px 32px rgba(255, 92, 124, 0.14);
+
+  font: 15px/1.55 var(--font-sans);
+  letter-spacing: -0.01em;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -25,31 +38,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
   @media (max-width: 600px) {
     font-size: 14px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    line-height: 1.48;
   }
 }
 
@@ -60,10 +51,17 @@ html, body {
   max-width: 100vw;
   overflow-x: hidden;
   box-sizing: border-box;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
 }
 
 *, *:before, *:after {
   box-sizing: border-box;
+}
+
+button, input, select, textarea {
+  font-family: var(--font-sans);
 }
 
 #root {
@@ -75,48 +73,61 @@ html, body {
   flex-direction: column;
   box-sizing: border-box;
   overflow-x: hidden;
+  font-family: var(--font-sans);
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
   color: var(--text-h);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  font-size: 34px;
+  line-height: 1.2;
+  margin: 20px 0;
+  @media (max-width: 600px) {
+    font-size: 24px;
+    line-height: 1.25;
+    margin: 14px 0;
   }
 }
+
 h2 {
   font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
+  line-height: 1.28;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
+  @media (max-width: 600px) {
     font-size: 20px;
+    line-height: 1.3;
   }
 }
+
+h3 {
+  font-size: 17px;
+  line-height: 1.35;
+  margin: 0 0 6px;
+  @media (max-width: 600px) {
+    font-size: 15px;
+  }
+}
+
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
+code, .counter {
+  font-family: var(--font-mono);
   display: inline-flex;
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--text-h);
 }
 
 code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  font-size: 13.5px;
+  line-height: 1.4;
+  padding: 3px 6px;
+  background: #fdf2f4;
+  color: #ff4367;
 }

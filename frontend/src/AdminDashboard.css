@@ -6,7 +6,7 @@
   min-height: 100vh;
   background: #f8fafc;
   color: #1e293b;
-  font-family: Inter, Arial, sans-serif;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', -apple-system, sans-serif);
   display: flex;
   flex-direction: column;
 }
