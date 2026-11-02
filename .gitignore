@@ -9,3 +9,11 @@ dist-ssr/
 .DS_Store
 .idea/
 .vscode/
+
+# Android
+.gradle/
+build/
+app/build/
+local.properties
+*.apk
+*.aab
