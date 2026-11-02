@@ -2336,11 +2336,128 @@ async function waitForLazada(driver) {
 }
 
 // =====================================================
+// SCRAPE LAZADA (FALLBACK FOR CLOUD / RENDER NO-CHROME)
+// =====================================================
+
+async function scrapeLazadaFallback(keyword) {
+  console.log(`Lazada Fallback running for: "${keyword}"`);
+  try {
+    // 1. Tìm trong DB các sản phẩm có từ khóa tương đồng
+    const tokens = normalizeKeyword(keyword).split(/\s+/).filter((w) => w.length >= 2);
+    if (tokens.length > 0) {
+      const orClauses = tokens.map(() => "(name LIKE ? OR search_keyword LIKE ?)").join(" OR ");
+      const orParams = [];
+      tokens.forEach((t) => orParams.push(`%${t}%`, `%${t}%`));
+      const [rows] = await pool.query(
+        `SELECT * FROM scraped_products WHERE ${orClauses} LIMIT 8`,
+        orParams,
+      );
+      if (rows && rows.length > 0) {
+        console.log(`Fallback: Found ${rows.length} relevant items in database for "${keyword}"`);
+        return rows.map((r) =>
+          normalizeProduct({
+            id: r.id,
+            name: r.name,
+            price: r.price,
+            currency: r.currency || "VND",
+            image: r.image,
+            url: r.url,
+            category: r.category,
+            condition: r.condition_name || "New",
+            location: r.location || "Vietnam",
+            platform: "Lazada",
+            source: "Lazada Catalog",
+          }),
+        );
+      }
+    }
+  } catch (err) {
+    console.error("Fallback DB query error:", err.message);
+  }
+
+  // 2. Dùng AI tạo 3-4 sản phẩm quà tặng cụ thể có link tìm kiếm thực tế trên Lazada
+  try {
+    console.log(`Fallback: Using AI to suggest realistic gift products with Lazada links for "${keyword}"...`);
+    const prompt = `Bạn là hệ thống gợi ý sản phẩm thương mại điện tử Lazada Việt Nam.
+Hãy đề xuất 4 sản phẩm quà tặng cụ thể, thực tế và đang bán chạy trên Lazada Việt Nam cho từ khóa: "${keyword}".
+Mỗi sản phẩm phải có tên cụ thể rõ ràng (thương hiệu, dòng sản phẩm), mức giá hợp lý (VND) và danh mục.
+Trả về DUY NHẤT một mảng JSON (không có markdown, không có giải thích):
+[
+  {
+    "name": "Tên sản phẩm đầy đủ cụ thể",
+    "price": 250000,
+    "category": "Danh mục sản phẩm",
+    "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&auto=format&fit=crop&q=80",
+    "searchQuery": "từ khóa tìm trên lazada"
+  }
+]`;
+
+    const aiRes = await askAI(prompt);
+    let text = (aiRes.text || "").trim();
+    if (text.startsWith("```json")) text = text.replace(/^```json/, "").replace(/```$/, "").trim();
+    if (text.startsWith("```")) text = text.replace(/^```/, "").replace(/```$/, "").trim();
+
+    const parsed = JSON.parse(text);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      const generated = parsed.map((item, idx) => {
+        const queryTerm = item.searchQuery || item.name;
+        return normalizeProduct({
+          id: createStableId("Lazada", queryTerm, item.name + idx),
+          name: item.name,
+          price: Number(item.price) || 200000,
+          currency: "VND",
+          image: item.image || "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=600&auto=format&fit=crop&q=80",
+          url: `https://www.lazada.vn/catalog/?q=${encodeURIComponent(queryTerm)}`,
+          condition: "New",
+          category: item.category || "Quà tặng",
+          location: "Vietnam",
+          platform: "Lazada",
+          source: "Lazada AI Curator",
+        });
+      });
+      // Lưu vào cache DB để lần sau có sẵn
+      saveProductsToCache(keyword, generated).catch(() => {});
+      return generated;
+    }
+  } catch (aiErr) {
+    console.error("Fallback AI generation error:", aiErr.message);
+  }
+
+  // 3. Fallback cuối cùng: Lấy bất kỳ 6 sản phẩm nổi bật trong DB
+  try {
+    const [rows] = await pool.query("SELECT * FROM scraped_products ORDER BY id DESC LIMIT 6");
+    return rows.map((r) =>
+      normalizeProduct({
+        id: r.id,
+        name: r.name,
+        price: r.price,
+        currency: r.currency || "VND",
+        image: r.image,
+        url: r.url,
+        category: r.category,
+        condition: r.condition_name || "New",
+        location: r.location || "Vietnam",
+        platform: "Lazada",
+        source: "Lazada Catalog",
+      }),
+    );
+  } catch {
+    return [];
+  }
+}
+
+// =====================================================
 // SCRAPE LAZADA
 // =====================================================
 
 async function scrapeLazada(keyword) {
-  const driver = await createDriver();
+  let driver;
+  try {
+    driver = await createDriver();
+  } catch (driverErr) {
+    console.warn(`Selenium Chrome not available for "${keyword}" (Cloud/Render environment):`, driverErr.message);
+    return await scrapeLazadaFallback(keyword);
+  }
 
   const products = [];
 
@@ -2645,10 +2762,12 @@ async function scrapeLazada(keyword) {
 
     return [];
   } finally {
-    try {
-      await driver.quit();
-    } catch {
-      // Ignore
+    if (driver) {
+      try {
+        await driver.quit();
+      } catch {
+        // Ignore
+      }
     }
   }
 }

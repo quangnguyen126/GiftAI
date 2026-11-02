@@ -144,6 +144,37 @@ async function setupTables() {
       demoUserId = existingUser[0].id;
     }
 
+    // 5.1 Tự động nạp danh mục sản phẩm quà tặng nếu bảng scraped_products còn trống
+    try {
+      const [scrapedCount] = await conn.query("SELECT COUNT(*) as c FROM scraped_products");
+      if (scrapedCount[0].c === 0) {
+        console.log("-> Bảng scraped_products còn trống, đang nạp danh mục quà tặng mẫu...");
+        const { SEED_PRODUCTS } = require("./seedProducts");
+        for (const item of SEED_PRODUCTS) {
+          const key = `seed_${Buffer.from(item.name).toString("base64").substring(0, 40)}`;
+          await conn.query(
+            `INSERT INTO scraped_products 
+             (product_key, platform, name, price, currency, image, url, condition_name, category, location, search_keyword, score, reason, created_at, updated_at)
+             VALUES (?, 'lazada', ?, ?, 'VND', ?, ?, 'New', ?, 'Vietnam', ?, 90, ?, NOW(), NOW())
+             ON DUPLICATE KEY UPDATE updated_at = NOW()`,
+            [
+              key,
+              item.name,
+              item.price,
+              item.image,
+              item.url,
+              item.category,
+              item.tags,
+              `Món quà tặng lý tưởng, được nhiều người yêu thích và lựa chọn.`,
+            ],
+          );
+        }
+        console.log("-> Đã nạp thành công danh mục quà tặng mẫu vào scraped_products!");
+      }
+    } catch (seedErr) {
+      console.warn("Không thể tự động nạp scraped_products:", seedErr.message);
+    }
+
     // 6. Seed dữ liệu mẫu cho Admin Dashboard nếu bảng search_history chưa có dữ liệu
     const [historyCount] = await conn.query("SELECT COUNT(*) as c FROM search_history");
     if (historyCount[0].c === 0) {
