@@ -13,6 +13,7 @@
 ## 🌐 Đường dẫn trực tiếp (Live Links)
 
 * 🚀 **Trải nghiệm ứng dụng Web (24/7):** [https://gift-ai-gilt.vercel.app/](https://gift-ai-gilt.vercel.app/)
+* 📱 **Tải ứng dụng Android (File APK):** [👉 Bấm vào đây để tải GiftAI_v1.0.apk](./BaoCao_DoAn/GiftAI_v1.0.apk)
 * ⚙️ **Máy chủ Backend API (Render):** [https://giftai-964g.onrender.com](https://giftai-964g.onrender.com)
 * 📄 **Thư mục Báo cáo & Tài liệu đồ án:** [👉 Bấm vào đây để xem thư mục BaoCao_DoAn](./BaoCao_DoAn/)
 
@@ -148,8 +149,8 @@ GiftAI/
 
 ## 👥 Thông tin tác giả & Đồ án
 
-* **Sinh viên thực hiện:
-* Nguyễn Việt Quang MSSV: 2351220268
-* Nguyễn Thiện Quân MSSV: 2351220231
+* **Sinh viên thực hiện:**
+  * Nguyễn Việt Quang - MSSV: 2351220268
+  * Nguyễn Thiện Quân - MSSV: 2351220231
 * **Lớp:** 23CT2
-* **Giảng viên hướng dẫn: Đỗ Phúc Hảo
+* **Giảng viên hướng dẫn:** ThS. Đỗ Phúc Hảo
