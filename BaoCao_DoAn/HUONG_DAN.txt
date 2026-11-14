@@ -1,0 +1,11 @@
+Thư mục này dùng để lưu trữ toàn bộ tài liệu & báo cáo của đồ án GiftAI.
+
+Bạn hãy copy các file sau vào đây:
+1. File báo cáo đồ án (định dạng PDF hoặc Word, ví dụ: Bao_Cao_Do_An_GiftAI.pdf)
+2. Slide thuyết trình (định dạng PPTX hoặc PDF, nếu có)
+
+Lưu ý:
+- Sau khi copy file báo cáo vào đây, bạn chỉ cần gõ lệnh Git để push lên GitHub:
+    git add .
+    git commit -m "docs: add project report and presentation"
+    git push origin main
