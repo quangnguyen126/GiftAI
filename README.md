@@ -149,7 +149,7 @@ GiftAI/
 ## 👥 Thông tin tác giả & Đồ án
 
 * **Sinh viên thực hiện:
-Nguyễn Việt Quang MSSV: 2351220268
-Nguyễn Thiện Quân MSSV: 2351220231
+* Nguyễn Việt Quang MSSV: 2351220268
+* Nguyễn Thiện Quân MSSV: 2351220231
 * **Lớp:** 23CT2
 * **Giảng viên hướng dẫn: Đỗ Phúc Hảo
