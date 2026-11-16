@@ -1,0 +1,167 @@
+% =========================================================
+% CHƯƠNG II: CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ
+% =========================================================
+
+\chapter{Cơ sở lý thuyết và công nghệ}
+\label{ch:coso}
+
+\begin{infobox}
+\textbf{Mục tiêu chương:}
+Chương này trình bày các kiến thức nền tảng về Mô hình Ngôn ngữ Lớn (LLM), kỹ nghệ sinh lời nhắc (Prompt Engineering), bài toán tái xếp hạng (Semantic Re-ranking), kỹ thuật thu thập dữ liệu web (Web Scraping), danh mục các công nghệ, thư viện thực tế được sử dụng trong hệ sinh thái GiftAI và phân tích so sánh với các công trình nghiên cứu liên quan.
+\end{infobox}
+
+% =========================================================
+% 2.1 KIẾN THỨC NỀN TẢNG VỀ TRÍ TUỆ NHÂN TẠO
+% =========================================================
+
+\section{Kiến thức nền tảng về Trí tuệ Nhân tạo}
+
+\subsection{Mô hình Ngôn ngữ Lớn và Kiến trúc Transformer}
+
+\begin{infobox}
+\textbf{Định nghĩa (Mô hình Ngôn ngữ Lớn -- LLM):}
+Mô hình Ngôn ngữ Lớn (\textit{Large Language Model -- LLM}) là một mạng nơ-ron học sâu quy mô lớn, được xây dựng dựa trên kiến trúc Transformer với cơ chế tự chú ý (\textit{Self-Attention Mechanism}), được huấn luyện trước trên khối lượng văn bản khổng lồ nhằm học được các biểu diễn ngữ nghĩa sâu sắc và khả năng suy luận logic theo ngữ cảnh.
+\end{infobox}
+
+Cốt lõi của kiến trúc Transformer dựa trên cơ chế chú ý tích vô hướng đa đầu (\textit{Multi-Head Attention})~\cite{transformer_vaswani}, cho phép mô hình đánh giá mối liên hệ phụ thuộc giữa mọi từ trong một câu bất kể khoảng cách vị trí của chúng:
+\begin{equation}
+\mathrm{Attention}(Q, K, V) = \mathrm{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V,
+\label{eq:attention}
+\end{equation}
+trong đó $Q$ (Query), $K$ (Key) và $V$ (Value) lần lượt là các ma trận biểu diễn truy vấn, khóa và giá trị; $d_k$ là số chiều của vector khóa nhằm co tỷ lệ để tránh hiện tượng gradient bị triệt tiêu ở hàm softmax.
+
+Trong đồ án GiftAI, thay vì áp dụng các bộ phân lớp học máy truyền thống vốn phụ thuộc vào tập nhãn cứng nhắc, hệ thống ứng dụng các dòng mô hình ngôn ngữ lớn thế hệ mới -- tiêu biểu là \textbf{Google Gemini 3.8 Flash}~\cite{gemini_team}, kết hợp bộ chuyển mạch dự phòng siêu tốc \textbf{Groq LPU}~\cite{groq_docs} và \textbf{OpenAI GPT-4o-mini}~\cite{openai_docs}. Ưu điểm vượt trội của các dòng mô hình Flash và LPU là kích thước tối ưu, tốc độ sinh token cực nhanh (độ trễ phản hồi chỉ từ 1,2 đến 2,5 giây), chi phí suy luận kinh tế và hỗ trợ cửa sổ ngữ cảnh rộng, rất thích hợp cho các bài toán xử lý dữ liệu thời gian thực.
+
+\subsection{Kỹ nghệ Lời nhắc (Prompt Engineering) và Phân rã Ý định}
+
+Kỹ nghệ sinh lời nhắc (\textit{Prompt Engineering}) là phương pháp thiết kế các chỉ dẫn văn bản đầu vào một cách có cấu trúc nhằm định hướng cho LLM thực hiện chính xác tác vụ mong muốn mà không cần thay đổi trọng số mô hình~\cite{prompt_wei}. Trong hệ thống GiftAI, hai kỹ thuật Prompting then chốt được triển khai:
+
+\begin{enumerate}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Phân rã ý định ngữ cảnh (\textit{Intent Parsing}):} Tiếp nhận câu mô tả tự do của người dùng kết hợp với các trường thuộc tính biểu mẫu, đưa qua Prompt yêu cầu mô hình bóc tách và chuẩn hóa về định dạng JSON nghiêm ngặt:
+    \begin{equation}
+    \mathcal{I}_{\mathrm{intent}} = \mathrm{LLM}_{\mathrm{parse}}(\text{UserDescription}, \text{Relationship}, \text{Age}, \text{Occasion}, \text{Budget}).
+    \end{equation}
+    Kết quả trả về bao gồm: câu tóm tắt nhu cầu (\texttt{summary}), các nhóm món quà tiềm năng (\texttt{items}) và bộ từ khóa tìm kiếm tinh gọn (\texttt{keywords}).
+
+    \item \textbf{Ép kiểu đầu ra có cấu trúc (\textit{JSON Structured Output}):} Nhằm giúp tầng Backend Express có thể phân tích cú pháp (\textit{parse}) an toàn mà không bị lỗi biên dịch, các câu lệnh hệ thống (\textit{System Prompt}) luôn đi kèm chỉ thị bắt buộc mô hình chỉ trả về duy nhất khối JSON thuần, loại bỏ các đoạn hội thoại rào đầu hay ký tự markdown thừa.
+\end{enumerate}
+
+\subsection{Kỹ thuật Tái xếp hạng theo ngữ cảnh (Contextual Re-ranking)}
+
+Khi hệ thống truy vấn danh mục sản phẩm từ kho quà tặng, tập ứng viên thô $\mathcal{P} = \{p_1, p_2, \dots, p_N\}$ thường chứa lẫn lộn nhiều mặt hàng phụ kiện hoặc đồ dùng lệch tông so với ngữ cảnh tặng quà.
+
+Để chọn lọc các sản phẩm hoàn hảo nhất, hệ thống áp dụng kỹ thuật \textbf{Tái xếp hạng dựa trên LLM} (\textit{LLM-based Re-ranking})~\cite{llm_reranking}. Bài toán được phát biểu dưới dạng hàm tối ưu:
+\begin{equation}
+\mathcal{R}^* = \arg\max_{\mathcal{R} \subset \mathcal{P}, |\mathcal{R}| \le K} \sum_{p \in \mathcal{R}} \mathrm{Score}(p \mid \mathcal{C}_{\mathrm{user}}),
+\label{eq:rerank}
+\end{equation}
+trong đó:
+\begin{itemize}[leftmargin=1.2cm, itemsep=2pt]
+    \item $\mathcal{C}_{\mathrm{user}} = \langle \text{Đối tượng}, \text{Giới tính}, \text{Độ tuổi}, \text{Dịp kỷ niệm}, \text{Ngân sách}, \text{Sở thích} \rangle$ là bộ hồ sơ ngữ cảnh của người nhận quà.
+    \item $K$ là số lượng quà tặng đề xuất tối ưu (mặc định đặt $K = 8$).
+    \item $\mathrm{Score}(p \mid \mathcal{C}_{\mathrm{user}})$ là điểm tương thích ngữ nghĩa được LLM đánh giá thông qua các quy tắc sàng lọc nghiêm ngặt được định nghĩa trong Prompt:
+    \begin{itemize}[leftmargin=0.6cm, itemsep=1pt]
+        \item \textit{Quy tắc 1 (Ưu tiên đối tượng):} Tương thích với lứa tuổi, giới tính và mối quan hệ xã hội.
+        \item \textit{Quy tắc 2 (Loại trừ tuyệt đối):} Loại bỏ ngay các mặt hàng rác, ốp lưng, linh kiện máy móc không mang tính chất quà tặng.
+        \item \textit{Quy tắc 3 (Đa dạng hóa chủng loại):} Đảm bảo danh mục được chọn có sự phong phú (ví dụ: phối hợp giữa mỹ phẩm, phụ kiện, hoa sáp, nến thơm thay vì chọn các món quà hoàn toàn giống nhau).
+    \end{itemize}
+\end{itemize}
+
+\begin{successbox}
+\textbf{Nguyên lý AI giải thích được (Explainable AI -- XAI):}
+Bên cạnh việc lựa chọn sản phẩm, LLM còn sinh kèm trường \texttt{reason} giải thích ngắn gọn lý do vì sao món quà đó được chọn dựa trên tâm lý học hành vi~\cite{gift_psychology}. Điều này mang lại tính diễn giải minh bạch (\textit{Explainability}), tạo dựng niềm tin vững chắc cho người dùng khi đưa ra quyết định mua sắm.
+\end{successbox}
+
+\subsection{Cơ chế Bộ nhớ đệm và Chịu lỗi (In-Memory Caching \& Fault Tolerance)}
+
+Các dịch vụ API AI đám mây thương mại luôn bị ràng buộc bởi giới hạn số lượt gọi mỗi phút (\textit{Rate Limit -- RPM}) và có độ trễ mạng nhất định. Để đảm bảo tính sẵn sàng cao (\textit{High Availability}), hệ thống thiết kế tầng điều phối với các giải pháp kỹ thuật:
+
+\begin{enumerate}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Bộ đệm RAM (\textit{In-Memory Caching}):} Dựa trên cấu trúc \texttt{Map()} trong Node.js, ánh xạ băm chuẩn hóa của câu lệnh $\mathrm{Key} = \mathrm{Trim}(\mathrm{Prompt})$ tới kết quả phản hồi. Thời gian sống (\textit{TTL}) được thiết lập là 30 phút. Bất kỳ yêu cầu nào có nội dung trùng lặp trong khung giờ này đều nhận kết quả tức thì ($< 10\text{ ms}$) mà không tiêu tốn thêm token. Khi kích thước bộ đệm vượt quá 500 mục, chính sách giải phóng FIFO (\textit{First-In, First-Out}) sẽ tự động thu hồi mục cũ nhất.
+    
+    \item \textbf{Xoay vòng đa khóa API (\textit{Multi-Key Rotation}):} Hệ thống đọc mảng khóa $\mathcal{K} = \{k_0, k_1, \dots, k_{M-1}\}$ từ biến môi trường. Khi gặp mã lỗi HTTP \texttt{429} (\textit{Too Many Requests}) hoặc lỗi cạn hạn ngạch tài nguyên (\textit{RESOURCE\_EXHAUSTED}), con trỏ khóa tự động tịnh tiến sang khóa kế tiếp theo vòng tròn modulo:
+    \begin{equation}
+    \text{Index}_{\mathrm{next}} = (\text{Index}_{\mathrm{current}} + 1) \pmod M.
+    \end{equation}
+    
+    \item \textbf{Chiến lược chuyển đổi dự phòng (\textit{Cascading Fallback}):} Khi tất cả các khóa của nhà cung cấp chính (Gemini 3.8 Flash) bị giới hạn, hệ thống tự động kích hoạt mô hình dự phòng (Groq LPU hoặc OpenAI GPT-4o-mini), đảm bảo dịch vụ vận hành thông suốt 24/7.
+\end{enumerate}
+
+% =========================================================
+% 2.2 KỸ THUẬT THU THẬP DỮ LIỆU TỰ ĐỘNG (WEB SCRAPING)
+% =========================================================
+
+\section{Kỹ thuật Thu thập Dữ liệu Tự động (Web Scraping)}
+
+Trên thực tế, các sàn thương mại điện tử lớn tại Việt Nam như Shopee hay Lazada không cung cấp API mở miễn phí để các nhà phát triển độc lập tìm kiếm và lấy dữ liệu sản phẩm. Do đó, hệ thống sử dụng kỹ thuật cào dữ liệu web tự động (\textit{Web Scraping}) để thu thập thông tin hàng hóa thực tế và nạp vào kho dữ liệu TiDB Cloud:
+
+\begin{itemize}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Tự động hóa trình duyệt với Selenium WebDriver:} Do các sàn TMĐT hiện đại được xây dựng dưới dạng ứng dụng trang đơn (\textit{Single Page Application -- SPA}) với cơ chế kết xuất phía máy khách (\textit{Client-Side Rendering}), mã nguồn HTML thô không chứa sẵn thông tin sản phẩm. Selenium điều khiển trình duyệt Google Chrome ở chế độ chạy ngầm (\textit{Headless Mode}), mô phỏng các hành vi cuộn trang và chờ nạp mạng bất đồng bộ (\textit{Async Wait}) để tải đầy đủ dữ liệu động.
+    
+    \item \textbf{Bóc tách cú pháp DOM nhanh với Cheerio:} Sau khi Selenium lấy được toàn bộ mã nguồn HTML đã kết xuất hoàn chỉnh, thư viện Cheerio được sử dụng để phân tích cây cấu trúc DOM (\textit{Document Object Model}) với cú pháp tương tự jQuery. Nhờ đó, việc trích xuất các thuộc tính như tiêu đề sản phẩm, đường dẫn ảnh, mức giá ưu đãi và liên kết mua hàng đạt hiệu năng cực cao.
+\end{itemize}
+
+% =========================================================
+% 2.3 CÔNG CỤ VÀ THƯ VIỆN CÔNG NGHỆ
+% =========================================================
+
+\section{Công cụ và thư viện công nghệ}
+
+Toàn bộ hệ thống GiftAI được phát triển và tích hợp dựa trên các công nghệ và thư viện mã nguồn mở hiện đại, được tổng hợp chi tiết tại Bảng~\ref{tab:congcu}.
+
+\begin{table}[htbp]
+\centering
+\caption{Danh mục công cụ và thư viện công nghệ trong hệ thống GiftAI.}
+\label{tab:congcu}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|p{3.5cm}|p{2.2cm}|X|}
+\hline
+\textbf{Thành phần công nghệ} & \textbf{Phiên bản} & \textbf{Vai trò và chức năng trong hệ thống} \\
+\hline
+Google GenAI SDK & 2.18.x & Gọi API mô hình Gemini 3.8 Flash để trích xuất ý định và Semantic Re-ranking. \\
+\hline
+Groq SDK / OpenAI SDK & 0.9.x / 4.x & Cung cấp mô hình dự phòng suy luận siêu tốc (LPU / GPT-4o-mini) khi Gemini quá tải. \\
+\hline
+Node.js \& Express & 20.x LTS / 4.x & Xây dựng máy chủ Backend RESTful API và quản lý điều phối luồng dữ liệu. \\
+\hline
+TiDB Cloud (MySQL2) & v8.0 / 3.x & Hệ CSDL phân tán (AWS Singapore) lưu trữ 1.400+ sản phẩm, tài khoản, lịch sử và thiệp. \\
+\hline
+Selenium WebDriver & 4.18.x & Tự động hóa trình duyệt thu thập sản phẩm thực tế từ các sàn TMĐT Shopee/Lazada. \\
+\hline
+Cheerio & 1.0.x-rc & Phân tích cú pháp HTML và bóc tách dữ liệu sản phẩm tốc độ cao. \\
+\hline
+React & 19.x & Xây dựng giao diện Web tương tác phản hồi nhanh (SPA) triển khai trên Vercel. \\
+\hline
+TypeScript & 5.x / 6.x & Tăng cường tính an toàn kiểu dữ liệu cho toàn bộ mã nguồn Frontend. \\
+\hline
+Vite & 6.x / 8.x & Công cụ biên dịch, phát triển và đóng gói mã nguồn Frontend tốc độ cao. \\
+\hline
+Tailwind CSS & 3.4.x & Thiết kế giao diện người dùng hiện đại, tương thích đa kích thước màn hình. \\
+\hline
+Android Studio & Hedgehog / Iguana & Đóng gói ứng dụng di động WebView Native chạy trên hệ điều hành Android. \\
+\hline
+\end{tabularx}
+\end{table}
+
+\noindent \textbf{Mô tả Bảng \ref{tab:congcu}:} Bảng tổng hợp 11 công nghệ, nền tảng đám mây và thư viện cốt lõi được sử dụng xuyên suốt trong quá trình xây dựng hệ sinh thái GiftAI từ tầng Client, Server, Database đến các dịch vụ AI.
+
+\noindent \textbf{Diễn giải Bảng \ref{tab:congcu}:} Hệ thống kết hợp hài hòa giữa các công nghệ hiện đại nhất: React 19 và TypeScript bảo đảm trải nghiệm mượt mà phía người dùng; Node.js Express cùng nhóm kết nối thường trực \texttt{mysql2} kết nối tới CSDL phân tán TiDB Cloud qua giao thức bảo mật SSL/TLS; trong khi Google GenAI SDK và Groq đảm nhiệm vai trò suy luận logic và tái xếp hạng ngữ nghĩa.
+
+\noindent \textbf{Giải thích Bảng \ref{tab:congcu}:} Việc lựa chọn ngăn xếp công nghệ này giúp hệ thống đạt tính độc lập cao, sẵn sàng vận hành trên môi trường Cloud thực tế (Vercel + Render + TiDB Cloud) với chi phí $0\text{ VNĐ}$ ở giai đoạn khởi động nhưng vẫn đảm bảo khả năng mở rộng quy mô khi lượng người dùng tăng cao.
+
+% =========================================================
+% 2.4 CÁC CÔNG TRÌNH VÀ GIẢI PHÁP LIÊN QUAN
+% =========================================================
+
+\section{Các công trình và giải pháp liên quan}
+
+Các hệ thống gợi ý hàng hóa truyền thống trong thương mại điện tử thường dựa trên hai hướng tiếp cận kinh điển~\cite{recommender_handbook}:
+
+\begin{itemize}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Lọc cộng tác (\textit{Collaborative Filtering}):} Dự đoán sở thích người dùng dựa trên hành vi mua sắm của nhóm người có hành vi tương tự (\textit{User-based}) hoặc dựa trên ma trận tương tác sản phẩm (\textit{Item-based})~\cite{recommender_handbook}. Hạn chế nghiêm trọng nhất của phương pháp này là \textbf{vấn đề khởi động lạnh} (\textit{Cold-start Problem}): người dùng rất ít khi mua quà nhiều lần cho cùng một người nhận trong cùng một dịp, dẫn tới việc ma trận tương tác bị thưa thớt (\textit{Sparse Matrix}) và thuật toán không thể đưa ra dự đoán chính xác.
+    
+    \item \textbf{Lọc dựa trên nội dung (\textit{Content-based Filtering}):} Đánh giá độ tương đồng giữa đặc trưng văn bản sản phẩm và hồ sơ người dùng thông qua các chỉ số như TF-IDF hoặc Word Embeddings. Điểm yếu của giải pháp này là không hiểu được mối quan hệ xã hội ẩn chứa đằng sau (ví dụ: sự khác biệt tế nhị giữa việc chọn quà cho cấp trên so với chọn quà cho người yêu)~\cite{gift_recsys}.
+\end{itemize}
+
+Hệ thống GiftAI khắc phục triệt để các nhược điểm trên nhờ vận dụng năng lực suy diễn "Zero-shot" của các mô hình ngôn ngữ lớn thế hệ mới~\cite{gemini_team, llm_reranking}. Bằng cách đưa toàn bộ hồ sơ ngữ cảnh (mối quan hệ, dịp tặng, ngân sách) trực tiếp vào Prompt để mô hình suy luận và tái xếp hạng danh mục sản phẩm từ kho dữ liệu TiDB Cloud, hệ thống vừa giải quyết triệt để vấn đề khởi động lạnh, vừa loại bỏ hiện tượng sinh thông tin ảo (\textit{Hallucination}), mang lại giá trị thiết thực và độ tin cậy vượt trội cho người sử dụng.

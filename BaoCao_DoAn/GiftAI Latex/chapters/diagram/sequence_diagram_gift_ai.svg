@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1030" width="1200" height="1030">
+<rect width="1200" height="1030" fill="#18181b" />
+<defs>
+  <marker id="arrow-solid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#b0b0b8" />
+  </marker>
+  <marker id="arrow-dashed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M 1 2 L 7 5 L 1 8" fill="none" stroke="#b0b0b8" stroke-width="1.5" stroke-linecap="round" />
+  </marker>
+</defs>
+<line x1="90" y1="96" x2="90" y2="1010" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<line x1="280" y1="80" x2="280" y2="1010" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<line x1="490" y1="80" x2="490" y2="1010" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<line x1="680" y1="80" x2="680" y2="1010" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<line x1="880" y1="80" x2="880" y2="1010" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<line x1="1070" y1="80" x2="1070" y2="1010" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<rect x="185" y="285" width="955" height="655" fill="none" stroke="#3f3f46" stroke-width="1.2" />
+<path d="M 185 285 L 435 285 L 445 309 L 185 309 Z" fill="#27272a" stroke="#3f3f46" stroke-width="1.2" />
+<text x="193" y="301" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11"><tspan font-weight="bold">alt</tspan> [Đã có trong bộ đệm (Cache Hit - 8ms)]</text>
+<line x1="185" y1="440" x2="1140" y2="440" stroke="#3f3f46" stroke-width="1.2" stroke-dasharray="6,6" />
+<text x="195" y="458" fill="#a1a1aa" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11">[Chưa có (Cache Miss)]</text>
+<line x1="99" y1="140" x2="280" y2="140" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="185.0" y="134" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Điền form 7 tiêu chí &amp; bấm &quot;Tìm quà ngay&quot;</text>
+<circle cx="90" cy="140" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="90" y="143.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">1</text>
+<line x1="289" y1="195" x2="490" y2="195" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="385.0" y="189" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Gửi yêu cầu gợi ý (JSON)</text>
+<circle cx="280" cy="195" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="280" y="198.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">2</text>
+<line x1="499" y1="250" x2="680" y2="250" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="585.0" y="244" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Kiểm tra chuỗi băm MD5 7 tiêu chí</text>
+<circle cx="490" cy="250" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="253.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">3</text>
+<line x1="671" y1="340" x2="490" y2="340" stroke="#b0b0b8" stroke-width="1.2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+<text x="585.0" y="334" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Trả về kết quả lưu sẵn</text>
+<circle cx="680" cy="340" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="680" y="343.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">4</text>
+<line x1="481" y1="395" x2="280" y2="395" stroke="#b0b0b8" stroke-width="1.2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+<text x="385.0" y="389" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Hiển thị ngay lập tức Top 4 sản phẩm</text>
+<circle cx="490" cy="395" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="398.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">5</text>
+<line x1="499" y1="485" x2="880" y2="485" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="685.0" y="479" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Gửi Prompt Pha 1 (Phân tích tâm lý &amp; Trích xuất từ khóa)</text>
+<circle cx="490" cy="485" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="488.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">6</text>
+<line x1="871" y1="540" x2="490" y2="540" stroke="#b0b0b8" stroke-width="1.2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+<text x="685.0" y="534" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Trả về search_keyword &amp; lý do</text>
+<circle cx="880" cy="540" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="880" y="543.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">7</text>
+<line x1="499" y1="595" x2="1070" y2="595" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="780.0" y="589" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Truy vấn kho 1.400+ sản phẩm theo từ khóa &amp; ngân sách</text>
+<circle cx="490" cy="595" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="598.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">8</text>
+<line x1="1061" y1="650" x2="490" y2="650" stroke="#b0b0b8" stroke-width="1.2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+<text x="780.0" y="644" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Trả về 20 sản phẩm ứng viên thô</text>
+<circle cx="1070" cy="650" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="1070" y="653.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">9</text>
+<line x1="499" y1="705" x2="880" y2="705" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="685.0" y="699" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Gửi Prompt Pha 2 (Re-ranking chấm điểm &amp; chọn lọc)</text>
+<circle cx="490" cy="705" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="708.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">10</text>
+<line x1="871" y1="760" x2="490" y2="760" stroke="#b0b0b8" stroke-width="1.2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+<text x="685.0" y="754" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Trả về Top 4 sản phẩm tinh tế nhất + Lời chúc</text>
+<circle cx="880" cy="760" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="880" y="763.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">11</text>
+<line x1="499" y1="815" x2="680" y2="815" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="585.0" y="809" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Lưu kết quả vào RAM (TTL 24h)</text>
+<circle cx="490" cy="815" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="818.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">12</text>
+<line x1="499" y1="870" x2="1070" y2="870" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="780.0" y="864" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Lưu lịch sử tìm kiếm (Bất đồng bộ)</text>
+<circle cx="490" cy="870" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="873.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">13</text>
+<line x1="481" y1="920" x2="280" y2="920" stroke="#b0b0b8" stroke-width="1.2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+<text x="385.0" y="914" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Hiển thị kết quả hoàn chỉnh</text>
+<circle cx="490" cy="920" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="490" y="923.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">14</text>
+<line x1="271" y1="975" x2="90" y2="975" stroke="#b0b0b8" stroke-width="1.2"  marker-end="url(#arrow-solid)" />
+<text x="185.0" y="969" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle">Người dùng xem quà &amp; bấm mua</text>
+<circle cx="280" cy="975" r="9" fill="#18181b" stroke="#71717a" stroke-width="1.5" />
+<text x="280" y="978.5" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="10" font-weight="bold" text-anchor="middle">15</text>
+<g transform="translate(74, 28)">
+  <circle cx="16" cy="16" r="16" fill="#27272a" stroke="#71717a" stroke-width="1.5" />
+  <circle cx="16" cy="11" r="5.5" fill="none" stroke="#a1a1aa" stroke-width="1.5" />
+  <path d="M 7 24 C 7 19, 11 18, 16 18 C 21 18, 25 19, 25 24" fill="none" stroke="#a1a1aa" stroke-width="1.5" stroke-linecap="round" />
+</g>
+<text x="90" y="82" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13" font-weight="bold" text-anchor="middle">Người dùng</text>
+<rect x="195" y="32" width="170" height="42" rx="8" ry="8" fill="#27272a" stroke="#3f3f46" stroke-width="1.5" />
+<text x="280" y="57" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Giao diện (Web/Android)</text>
+<rect x="410" y="32" width="160" height="42" rx="8" ry="8" fill="#27272a" stroke="#3f3f46" stroke-width="1.5" />
+<text x="490" y="57" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Node.js Backend</text>
+<rect x="610" y="32" width="140" height="42" rx="8" ry="8" fill="#27272a" stroke="#3f3f46" stroke-width="1.5" />
+<text x="680" y="57" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Cache RAM</text>
+<rect x="800" y="32" width="160" height="42" rx="8" ry="8" fill="#27272a" stroke="#3f3f46" stroke-width="1.5" />
+<text x="880" y="57" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">Gemini 3.8 Flash</text>
+<rect x="1000" y="32" width="140" height="42" rx="8" ry="8" fill="#27272a" stroke="#3f3f46" stroke-width="1.5" />
+<text x="1070" y="57" fill="#f4f4f5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle">TiDB Cloud</text>
+</svg>
