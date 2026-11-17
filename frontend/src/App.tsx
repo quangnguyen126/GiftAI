@@ -920,23 +920,39 @@ function App() {
                     >
                       <option value="">Chọn quan hệ</option>
 
+                      <option>Bố</option>
+
+                      <option>Mẹ</option>
+
                       <option>Bạn gái</option>
 
                       <option>Bạn trai</option>
 
                       <option>Người yêu</option>
 
-                      <option>Vợ / Chồng</option>
+                      <option>Người yêu cũ (Ex)</option>
 
-                      <option>Bố / Mẹ</option>
+                      <option>Vợ</option>
 
-                      <option>Bạn bè</option>
+                      <option>Chồng</option>
 
-                      <option>Anh / Chị / Em</option>
+                      <option>Em trai</option>
 
-                      <option>Đồng nghiệp / Sếp</option>
+                      <option>Em gái</option>
+
+                      <option>Anh trai</option>
+
+                      <option>Chị gái</option>
+
+                      <option>Bạn thân / Bạn bè</option>
+
+                      <option>Đồng nghiệp</option>
+
+                      <option>Sếp / Quản lý</option>
 
                       <option>Thầy / Cô giáo</option>
+
+                      <option>Con cái / Trẻ em</option>
                     </select>
                   </div>
 
@@ -993,15 +1009,21 @@ function App() {
                     >
                       <option value="">Chọn dịp</option>
 
+                      <option>Sinh nhật</option>
+
                       <option>Ngày Phụ nữ 20/10</option>
 
                       <option>Quốc tế Phụ nữ 8/3</option>
 
-                      <option>Sinh nhật</option>
-
                       <option>Valentine 14/2</option>
 
-                      <option>Kỷ niệm</option>
+                      <option>Valentine Trắng 14/3</option>
+
+                      <option>Ngày của Mẹ (Mother's Day)</option>
+
+                      <option>Ngày của Cha (Father's Day)</option>
+
+                      <option>Kỷ niệm ngày yêu / ngày cưới</option>
 
                       <option>Ngày Nhà giáo 20/11</option>
 
@@ -1013,7 +1035,13 @@ function App() {
 
                       <option>Tân gia</option>
 
+                      <option>Khai trương / Thăng chức</option>
+
+                      <option>Quốc tế Thiếu nhi 1/6 & Trung Thu</option>
+
                       <option>Tết / Năm mới</option>
+
+                      <option>Hòa giải / Chia tay văn minh / Chúc bình an</option>
                     </select>
                   </div>
 

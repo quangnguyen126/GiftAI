@@ -22,14 +22,17 @@
 ## 📖 Giới thiệu đề tài
 **GiftAI** là giải pháp gợi ý quà tặng thông minh ứng dụng Trí tuệ nhân tạo (AI) giúp người dùng giải quyết vấn đề nan giải trong việc lựa chọn quà tặng phù hợp cho người thân, bạn bè, đồng nghiệp vào các dịp đặc biệt.
 
-Hệ thống kết hợp giữa **mô hình ngôn ngữ lớn (LLM - Google Gemini 3.8 Flash)** cùng **kho dữ liệu quà tặng thực tế (1.400+ sản phẩm)** được cào tự động từ các sàn thương mại điện tử (Tiki, Shopee, Lazada), đem lại những gợi ý thực tế, sát ngân sách và đúng tâm lý người nhận.
+Hệ thống kết hợp giữa **mô hình ngôn ngữ lớn (LLM - Google Gemini 3.8 Flash)** cùng **kho dữ liệu quà tặng thực tế phong phú (2.390+ sản phẩm)** được cào tự động từ các sàn thương mại điện tử (Tiki, Shopee, Lazada), đem lại những gợi ý thực tế, sát ngân sách và đúng tâm lý người nhận.
 
 ---
 
 ## 🌟 Các tính năng nổi bật
 
 ### 1. Tư vấn quà tặng thông minh bằng AI
-* Lựa chọn đa tiêu chí: Dịp lễ (Sinh nhật, Valentine, 20/10, Giáng sinh, Kỷ niệm...), đối tượng nhận quà (Người yêu, Bố mẹ, Đồng nghiệp, Bạn thân...), độ tuổi, giới tính và khoảng ngân sách.
+* **Lựa chọn đa tiêu chí:**
+  * **Đối tượng nhận quà phong phú:** Bố, Mẹ, Bạn gái, Bạn trai, Người yêu, Người yêu cũ (Ex - quà chữa lành/tinh tế/văn minh), Vợ, Chồng, Em trai, Em gái, Anh trai, Chị gái, Bạn thân, Đồng nghiệp, Sếp, Thầy/Cô giáo, Con cái / Trẻ em...
+  * **Dịp tặng toàn diện:** Sinh nhật, Valentine 14/2, Valentine Trắng 14/3, Ngày Phụ nữ 20/10, Quốc tế Phụ nữ 8/3, Ngày của Mẹ (Mother's Day), Ngày của Cha (Father's Day), Ngày Nhà giáo 20/11, Giáng sinh (Noel), Tết Nguyên Đán, Tốt nghiệp, Tân gia, Khai trương / Thăng chức, Quốc tế Thiếu nhi 1/6 & Trung Thu, Hòa giải / Chia tay văn minh / Chúc bình an...
+  * **Độ tuổi, giới tính và khoảng ngân sách** (Dưới 100k, 100k-300k, 300k-500k, 500k-1 triệu, trên 1 triệu).
 * AI phân tích tâm lý người nhận, đưa ra lời giải thích thuyết phục vì sao nên chọn từng món quà và sắp xếp theo độ ưu tiên.
 * **Cơ chế chống nghẽn đa AI (Multi-AI Fallback):** Ưu tiên **Google Gemini 3.8 Flash**, tự động chuyển đổi sang **Groq AI (Qwen)** hoặc **OpenRouter** khi bị quá tải hạn mức.
 
@@ -71,7 +74,7 @@ Hệ thống kết hợp giữa **mô hình ngôn ngữ lớn (LLM - Google Gemi
 
 Hệ thống lưu trữ trên đám mây TiDB Cloud với 6 bảng chính:
 * `users`: Lưu tài khoản người dùng, quản trị viên, mật khẩu mã hóa bcrypt.
-* `scraped_products`: Kho hơn 1.400+ sản phẩm quà tặng thực tế, giá cả, hình ảnh và link mua hàng.
+* `scraped_products`: Kho hơn 2.390+ sản phẩm quà tặng thực tế, giá cả, hình ảnh và link mua hàng.
 * `search_history`: Lưu vết các phiên tìm kiếm, tóm tắt tâm lý của AI và snapshot danh sách quà tặng.
 * `product_recommendation_stats`: Thống kê tần suất đề xuất và số lượt click của người dùng.
 * `user_favorites`: Danh sách món quà yêu thích được từng tài khoản lưu lại.

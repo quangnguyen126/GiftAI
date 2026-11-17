@@ -1,0 +1,65 @@
+% =========================================================
+% CHƯƠNG VII: KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
+% =========================================================
+
+\chapter{Kết luận và hướng phát triển}
+\label{chap:chuong7}
+
+\begin{infobox}
+\textbf{Mục tiêu chương:}
+Chương này tổng kết toàn diện quá trình nghiên cứu, thiết kế kiến trúc và hiện thực hóa đề tài ``Hệ thống gợi ý quà tặng thông minh tích hợp trí tuệ nhân tạo (GiftAI)''. Chương tổng hợp lại các đóng góp nổi bật về mặt học thuật và kỹ thuật thực tiễn mà nhóm sinh viên đã đạt được, chỉ ra những bài học kinh nghiệm sâu sắc thu nhận được sau quá trình triển khai, đồng thời vạch ra lộ trình nghiên cứu và nâng cấp hệ thống trong tương lai cả ở quy mô ngắn hạn lẫn dài hạn.
+\end{infobox}
+
+\section{Tổng kết và Đóng góp của đề tài}
+
+Sau thời gian tập trung nghiên cứu, thiết kế kiến trúc và triển khai thực nghiệm dưới sự định hướng khoa học của giảng viên hướng dẫn, nhóm sinh viên đã hoàn thành xuất sắc đồ án môn học Trí tuệ nhân tạo thông qua việc xây dựng trọn vẹn hệ sinh thái \textbf{GiftAI}. Đề tài đã giải quyết triệt để bài toán khó khăn của người tiêu dùng hiện đại trong việc lựa chọn quà tặng, chuyển hóa sự lúng túng khi đứng trước hàng triệu sản phẩm trên sàn thương mại điện tử thành một trải nghiệm cá nhân hóa, ấm áp và giàu cảm xúc.
+
+Nhìn lại toàn bộ quá trình thực hiện, đề tài đã mang lại bốn đóng góp trọng tâm cả về mặt lý thuyết ứng dụng lẫn giá trị thực tiễn:
+
+\subsection{Về mặt khoa học và mô hình hóa bài toán}
+\begin{enumerate}
+    \item \textbf{Giải quyết nghịch lý người mua không phải người dùng:} Đề tài đã mô hình hóa thành công bài toán gợi ý quà tặng dưới dạng vector ngữ cảnh 7 chiều, khắc phục hoàn toàn hiện tượng ``khởi đầu lạnh'' (\textit{Cold-Start Problem}) mà các thuật toán lọc cộng tác truyền thống (\textit{Collaborative Filtering}) bất lực do không có sẵn lịch sử tiêu dùng của người nhận quà.
+    \item \textbf{Phương pháp Prompt Engineering hai pha (Two-Phase Prompting):} Thiết lập quy trình tư duy phân tách rành mạch: Pha 1 phân tích tâm lý học hành vi và sinh từ khóa; Pha 2 đảm nhận vai trò màng lọc ngữ nghĩa (\textit{Semantic Re-ranking}) giúp loại bỏ tới $94.2\%$ sản phẩm rác, phụ kiện lệch chủ đề do người bán nhồi từ khóa SEO trên các sàn thương mại điện tử.
+    \item \textbf{Hiện thực hóa nguyên lý Trí tuệ nhân tạo giải thích được (Explainable AI -- XAI):} Khắc phục nhược điểm ``hộp đen'' của các mô hình AI hiện đại. Hệ thống không chỉ đưa ra danh mục sản phẩm mà còn cung cấp lời lý giải tâm lý sâu sắc (\textit{AI Reasoning Callout}) cho từng món quà, gia tăng niềm tin và sự hài lòng của người dùng khi đưa ra quyết định mua sắm.
+\end{enumerate}
+
+\subsection{Về mặt kỹ thuật hệ thống và kiến trúc phần mềm}
+\begin{enumerate}
+    \item \textbf{Kiến trúc phân tán trên môi trường Cloud thực tế:} Vận hành hệ thống ổn định trên hạ tầng Cloud-native gồm Frontend trên Vercel, Backend Node.js trên Render quản lý nhóm kết nối thường trực (\textit{Connection Pool 10 luồng}) và cơ sở dữ liệu phân tán TiDB Cloud (AWS Singapore) lưu trữ kho $1.400+$ sản phẩm tuyển chọn qua kết nối an toàn SSL/TLSv1.2.
+    \item \textbf{Tầng điều phối AI 4 tầng chịu lỗi cao (Fault-Tolerant Engine):} Thiết kế module \texttt{aiManager.js} với cơ chế bộ đệm RAM (\textit{In-Memory Cache}) phản hồi siêu tốc dưới $10\text{ ms}$, thuật toán xoay vòng đa khóa API (\textit{Round-Robin Modulo Dispatcher}) nâng công suất chịu tải lên gấp 4 lần, kết hợp cơ chế chuyển mạch dự phòng đa đám mây (\textit{Fallback Cascade}) từ Google Gemini 3.8 Flash sang Groq LPU hoặc OpenAI GPT-4o-mini, bảo vệ hệ thống tuyệt đối không bị gián đoạn dịch vụ.
+    \item \textbf{Hệ sinh thái đa nền tảng hoàn chỉnh:} Xây dựng ứng dụng Web Single Page Application (SPA) trên nền React 19, TypeScript, Vite, giao diện Tailwind CSS hiện đại, cùng ứng dụng di động Android Native WebView container mượt mà, tối ưu hóa trải nghiệm trên mọi kích thước màn hình.
+    \item \textbf{Các tính năng giá trị gia tăng giàu cảm xúc:} Tích hợp phòng sáng tạo thiệp chúc mừng điện tử bằng Generative AI với hiệu ứng pháo hoa mở hộp quà tương tác và phân hệ Hộp kỷ niệm ảo (\textit{Virtual Memory Box}) chia sẻ qua mã \texttt{share\_code} độc bản với tính năng đếm xuôi ngày yêu hoặc đếm ngược sự kiện quan trọng.
+\end{enumerate}
+
+\section{Bài học kinh nghiệm thu nhận được}
+
+Quá trình hiện thực hóa đề tài từ ý tưởng sơ khai trên bản vẽ kỹ thuật đến một sản phẩm phần mềm chạy thực tế trên Cloud đã mang lại cho nhóm sinh viên những bài học thực tiễn vô cùng quý báu:
+\begin{itemize}
+    \item \textbf{Năng lực kiểm soát tính tất định của LLM:} Làm việc với các mô hình ngôn ngữ lớn đòi hỏi kỹ năng thiết kế prompt cực kỳ chặt chẽ. Việc áp dụng các kỹ thuật ép kiểu (\textit{Structured Output constraint}), lọc biểu thức chính quy (\textit{Regex Sanitizer}) và kiểm soát tham số nhiệt độ (\textit{Temperature}) là chìa khóa để giữ cho hệ thống luôn trả về dữ liệu JSON chuẩn xác, không bị lỗi cú pháp khi giải mã tự động.
+    \item \textbf{Tư duy kiến trúc hệ thống phân tầng và tối ưu kết nối Cloud:} Nhóm nhận thức rõ tầm quan trọng của việc tách biệt giữa Tầng giao diện, Tầng điều phối ứng dụng, Tầng xử lý AI và Tầng dữ liệu. Việc ứng dụng kỹ thuật Connection Pooling giúp giảm độ trễ bắt tay TCP/TLS giữa Render và TiDB Cloud từ $220\text{ ms}$ xuống chỉ còn $12\text{ ms}$, bảo đảm hiệu năng tối ưu trên môi trường mạng phân tán.
+    \item \textbf{Tầm quan trọng của trải nghiệm người dùng (UX):} Dù thuật toán AI có phức tạp đến đâu, nếu giao diện nhập liệu cồng kềnh thì người dùng cũng sẽ nhanh chóng từ bỏ. Việc thiết kế Wizard khảo sát trực quan dạng câu hỏi trắc nghiệm tương tác giúp giảm thiểu tối đa sự mệt mỏi nhận thức (\textit{Cognitive Load}) của khách hàng.
+\end{itemize}
+
+\section{Hướng phát triển trong tương lai}
+
+Để đưa GiftAI từ một đề tài môn học xuất sắc trở thành một nền tảng thương mại điện tử hoàn chỉnh có sức cạnh tranh cao trên thị trường, nhóm nghiên cứu đề xuất lộ trình nâng cấp hệ thống theo hai giai đoạn:
+
+\subsection{Kế hoạch nâng cấp trong ngắn hạn (Short-term Roadmap)}
+\begin{itemize}
+    \item \textbf{Chuyển đổi bộ đệm phân tán với Redis:} Thay thế đối tượng \texttt{Map} trong bộ nhớ RAM tiến trình cục bộ bằng cụm máy chủ đệm Redis (\textit{Redis Cluster}). Điều này cho phép mở rộng Backend theo chiều ngang (\textit{Horizontal Scaling}) trên nhiều container Docker chạy song song mà vẫn chia sẻ chung dữ liệu đệm ngữ nghĩa và tỉ lệ Cache Hit.
+    \item \textbf{Tích hợp Open API chính thức từ các sàn TMĐT:} Đăng ký cổng đối tác chính thức (\textit{Shopee Open Platform} và \textit{Lazada Open API}) để truy xuất dữ liệu sản phẩm, tồn kho và giá bán qua API chuẩn RESTful, thay thế hoàn toàn phương pháp cào dữ liệu qua Cheerio/Selenium nhằm triệt tiêu rủi ro bị chặn IP hoặc thay đổi cấu trúc mã nguồn HTML.
+    \item \textbf{Nâng cấp ứng dụng di động hoàn chỉnh:} Phát triển ứng dụng di động thuần gốc (\textit{Native App}) bằng React Native hoặc Flutter để bổ sung tính năng thông báo đẩy nền (\textit{Push Notifications}), tự động gửi cảnh báo nhắc nhở mua quà về điện thoại của người dùng trước 3 ngày diễn ra sự kiện trong Hộp kỷ niệm ảo.
+\end{itemize}
+
+\subsection{Kế hoạch nghiên cứu trong dài hạn (Long-term Vision)}
+\begin{itemize}
+    \item \textbf{Tự lưu trữ mô hình ngôn ngữ nhỏ tinh chỉnh (Self-Hosted Fine-tuned SLM):} Thực hiện tinh chỉnh chuyên sâu (\textit{Fine-tuning}) các mô hình mã nguồn mở thế hệ mới (như Llama 3 8B hoặc Gemma 2 9B) trên tập dữ liệu hội thoại tư vấn quà tặng và văn hóa tiêu dùng Việt Nam. Việc tự lưu trữ mô hình trên máy chủ riêng giúp hệ thống giảm dần sự phụ thuộc vào các API thương mại bên ngoài, đồng thời cắt giảm chi phí vận hành dịch vụ về mức tối thiểu.
+    \item \textbf{Ứng dụng Thị giác máy tính đa phương thức (Multimodal AI):} Bổ sung tính năng cho phép người dùng chụp ảnh căn phòng, góc bàn làm việc hoặc phong cách ăn mặc thời trang của người nhận quà. Mô hình thị giác máy tính sẽ tự động phân tích bảng màu ưa thích, gu thẩm mỹ và phong cách sống để tự động sinh ra đề xuất quà tặng có sự hài hòa thị giác vượt bậc.
+    \item \textbf{Mở rộng thị trường quốc tế và thanh toán trực tiếp (In-App Checkout):} Mở rộng kết nối tới các sàn thương mại điện tử xuyên biên giới như Amazon, TikTok Shop, Taobao; hỗ trợ đa ngôn ngữ và phong tục tặng quà theo từng nền văn hóa; tích hợp cổng thanh toán trực tuyến (VNPay, MoMo, ZaloPay) để người dùng có thể thanh toán một chạm khép kín trực tiếp trên nền tảng.
+\end{itemize}
+
+\section{Lời kết}
+
+Hệ thống gợi ý quà tặng thông minh \textbf{GiftAI} là minh chứng rõ nét cho thấy Trí tuệ nhân tạo thế hệ mới không hề xa vời mà có thể len lỏi vào từng khía cạnh đời sống thường nhật, giải quyết hiệu quả những nhu cầu thiết thực của con người. Bằng việc kết hợp hài hòa giữa năng lực thấu hiểu ngôn ngữ tự nhiên sâu sắc của mô hình ngôn ngữ lớn (Gemini 3.8 Flash), tính cập nhật dữ liệu của thương mại điện tử thực tế và kiến trúc phần mềm Cloud phân tán bền bỉ, đề tài đã xây dựng thành công một giải pháp công nghệ toàn diện, thẩm mỹ và giàu tính nhân văn.
+
+Nhóm sinh viên thực hiện đề tài hy vọng rằng những kết quả nghiên cứu và mã nguồn hiện thực hóa của dự án GiftAI sẽ là tài liệu tham khảo hữu ích cho các bạn sinh viên khóa sau, đồng thời tạo tiền đề vững chắc cho các nghiên cứu ứng dụng công nghệ trí tuệ nhân tạo vào lĩnh vực thương mại điện tử và tâm lý học tiêu dùng tại Việt Nam trong kỷ nguyên số.

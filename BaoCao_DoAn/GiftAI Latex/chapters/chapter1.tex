@@ -1,0 +1,129 @@
+% =========================================================
+% CHƯƠNG I: MỞ ĐẦU
+% =========================================================
+
+\chapter{Mở đầu}
+\label{ch:modau}
+
+\begin{infobox}
+\textbf{Mục tiêu chương:}
+Chương mở đầu trình bày bối cảnh thực tiễn và lý do lựa chọn đề tài GiftAI, xác định mục tiêu tổng quát và các mục tiêu kỹ thuật cụ thể cần đạt được, giới hạn đối tượng và phạm vi nghiên cứu, phương pháp tiếp cận và khái quát bố cục tổng thể 7 chương của báo cáo đồ án.
+\end{infobox}
+
+% =========================================================
+% 1.1 LÝ DO CHỌN ĐỀ TÀI
+% =========================================================
+
+\section{Lý do chọn đề tài}
+
+Tặng quà là một nét văn hóa giao tiếp giàu tính nhân văn trong đời sống xã hội, đóng vai trò như chiếc cầu nối cảm xúc nhằm bày tỏ lòng tri ân, tình cảm và sự gắn kết giữa các cá nhân. Một món quà được chuẩn bị chu đáo không chỉ mang giá trị vật chất đơn thuần mà còn gửi gắm sự thấu hiểu, tinh tế của người tặng đối với người nhận. Tuy nhiên, trong bối cảnh nhịp sống hiện đại, quá trình tìm kiếm và đưa ra quyết định chọn lựa một món quà ưng ý thường đặt người tiêu dùng trước nhiều rào cản:
+
+\begin{itemize}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Hiện tượng quá tải thông tin trên sàn TMĐT:} Sự bùng nổ của các nền tảng thương mại điện tử lớn tại Việt Nam như Shopee, Lazada hay Tiki mang đến hàng triệu mặt hàng phong phú. Dù vậy, thanh tìm kiếm truyền thống tại các nền tảng này hoạt động dựa trên cơ chế so khớp từ khóa chính xác (\textit{Lexical/Keyword matching}), hoàn toàn không có khả năng hiểu được ngữ cảnh cảm xúc, mối quan hệ xã hội (bạn gái, mẹ, đồng nghiệp, cấp trên) hay tính cách đặc thù của người nhận.
+    
+    \item \textbf{Khó khăn trong việc dung hòa các tiêu chí cá nhân hóa:} Việc chọn quà đòi hỏi sự dung hòa chặt chẽ giữa nhiều ràng buộc thực tế: mức ngân sách dự kiến, độ tuổi, giới tính, sở thích riêng biệt và dịp kỷ niệm cụ thể (sinh nhật, ngày 20/10, ngày Valentine, lễ tốt nghiệp, tân gia). Người dùng thường mất rất nhiều giờ lướt qua hàng chục trang sản phẩm, đọc đánh giá và so sánh giá cả nhưng vẫn không chắc chắn về mức độ phù hợp của món quà.
+    
+    \item \textbf{Tiềm năng vượt bậc của Mô hình Ngôn ngữ Lớn (LLM):} Sự ra đời và phát triển mạnh mẽ của các mô hình AI hiện đại như Google Gemini và OpenAI GPT đã mở ra khả năng suy luận ngữ cảnh sâu sắc, thấu hiểu ngôn ngữ tự nhiên không cấu trúc và phân tích tâm lý người dùng. Khác với các thuật toán lọc cộng tác truyền thống đòi hỏi lịch sử tương tác dày đặc, LLM có thể suy luận trực tiếp ngay trong lần đầu tiên (\textit{Zero-shot reasoning}) dựa trên các dữ liệu ngữ cảnh mà người tặng cung cấp.
+\end{itemize}
+
+Xuất phát từ những băn khoăn thực tế đó, đề tài \textbf{\guillemotleft Xây dựng hệ thống gợi ý quà tặng thông minh ứng dụng Mô hình Ngôn ngữ Lớn (GiftAI)\guillemotright} được lựa chọn thực hiện. Hệ thống kết hợp hài hòa giữa năng lực hiểu ngôn ngữ tự nhiên của các LLM thế hệ mới (Google Gemini 3.8 Flash, Groq, OpenAI) với dữ liệu sản phẩm thực tế được chuẩn hóa trên cơ sở dữ liệu phân tán TiDB Cloud và thu thập tự động từ các sàn thương mại điện tử (Shopee, Lazada), đem lại giải pháp tìm quà trực quan, chính xác, tiết kiệm thời gian và mang tính cá nhân hóa cao.
+
+% =========================================================
+% 1.2 MỤC TIÊU CỦA ĐỒ ÁN
+% =========================================================
+
+\section{Mục tiêu của đồ án}
+
+\subsection{Mục tiêu tổng quát}
+
+Xây dựng hoàn chỉnh hệ sinh thái ứng dụng Trí tuệ Nhân tạo đa nền tảng (Web SPA trên Vercel và Android Native WebView) mang tên \textbf{GiftAI}, vận hành trên nền tảng Backend Node.js phân tán (Render) và CSDL TiDB Cloud. Hệ thống có khả năng tiếp nhận yêu cầu ngôn ngữ tự nhiên của người dùng, phân tích ngữ cảnh người nhận để truy xuất và tái xếp hạng (\textit{Re-ranking}) danh mục quà tặng phù hợp nhất từ kho $1.400+$ sản phẩm thương mại điện tử thực tế; đồng thời cung cấp các tiện ích sáng tạo như sinh thiệp chúc mừng tự động và hộp quà kỷ niệm ảo.
+
+\subsection{Mục tiêu cụ thể}
+
+Để đạt được mục tiêu tổng quát, đồ án xác định sáu mục tiêu kỹ thuật cụ thể và đo lường được:
+
+\begin{enumerate}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Trích xuất ý định người dùng (\textit{Intent Parsing}):} Ứng dụng LLM để phân rã câu mô tả tự do của người dùng kết hợp cùng các bộ lọc định lượng (đối tượng, dịp tặng, độ tuổi, ngân sách) thành cấu trúc JSON chuẩn gồm từ khóa tìm kiếm và danh mục quà tiềm năng.
+    
+    \item \textbf{Quản lý và thu thập dữ liệu sản phẩm thực tế (\textit{Data Ingestion \& Scraping}):} Xây dựng kho catalog hơn $1.400+$ sản phẩm chuẩn hóa lưu trữ trên CSDL phân tán TiDB Cloud (AWS Singapore ap-southeast-1, SSL/TLSv1.2); kết hợp module cào dữ liệu tự động sử dụng Selenium WebDriver và Cheerio để trích xuất thông tin sản phẩm (tên, giá, hình ảnh, link mua hàng) từ các sàn thương mại điện tử (Shopee, Lazada).
+    
+    \item \textbf{Tái xếp hạng theo ngữ cảnh (\textit{Contextual Re-ranking}):} Thiết kế cấu trúc Prompt chấm điểm để LLM sàng lọc tập ứng viên sản phẩm, loại trừ triệt để các mặt hàng rác và phụ kiện không liên quan (chiếm tới $94.2\%$ độ chính xác) và lựa chọn ra các món quà tối ưu nhất kèm giải thích lý do đề xuất theo nguyên lý AI giải thích được (\textit{Explainable AI}).
+    
+    \item \textbf{Xây dựng kiến trúc điều phối AI chịu lỗi cao (\textit{AI Manager}):} Hiện thực hóa thuật toán xoay vòng đa khóa API (\textit{Multi-Key Rotation Modulo}), tự động chuyển đổi dự phòng mô hình (\textit{Cascading Fallback} từ Gemini 3.8 Flash sang Groq/OpenAI) khi gặp lỗi giới hạn hạn ngạch (\textit{HTTP 429}), và bộ nhớ đệm RAM (\textit{In-Memory Caching}) với thời gian sống 30 phút nhằm tối ưu tốc độ phản hồi dưới $10\text{ ms}$.
+    
+    \item \textbf{Phát triển các tính năng giá trị gia tăng giàu cảm xúc:}
+    \begin{itemize}[leftmargin=0.8cm, itemsep=2pt]
+        \item \textbf{Thiệp chúc mừng tự động (AI Greeting Card):} Sinh lời chúc mừng mang nhiều sắc thái cảm xúc (chân thành, hóm hỉnh, lãng mạn, trang trọng) và tích hợp hiệu ứng pháo hoa mở hộp quà đa phương tiện.
+        \item \textbf{Hộp quà kỷ niệm ảo (Virtual Memory Box):} Lưu trữ thông điệp yêu thương, chia sẻ qua mã định danh công khai \texttt{share\_code} độc bản dạng \texttt{MEM-XXXXXX} và hiển thị đồng hồ đếm ngày yêu / đếm ngược sự kiện.
+    \end{itemize}
+    
+    \item \textbf{Triển khai hạ tầng Cloud đa nền tảng:} Đóng gói và phát hành Web SPA trên Vercel (React 19, TypeScript, Vite, Tailwind CSS), Backend Express trên Render duy trì nhóm 10 kết nối thường trực (\textit{Connection Pool}), và ứng dụng di động Android Native WebView độc lập.
+\end{enumerate}
+
+% =========================================================
+% 1.3 PHẠM VI VÀ ĐỐI TƯỢNG
+% =========================================================
+
+\section{Phạm vi và đối tượng}
+
+\subsection{Đối tượng nghiên cứu và người dùng}
+
+\begin{itemize}[leftmargin=1.2cm, itemsep=2pt]
+    \item \textbf{Đối tượng nghiên cứu:}
+    \begin{itemize}[leftmargin=0.6cm, itemsep=2pt]
+        \item Các kỹ thuật Kỹ nghệ sinh lời nhắc (\textit{Prompt Engineering}) và suy luận ngữ cảnh trên Mô hình Ngôn ngữ Lớn (Google Gemini 3.8 Flash, Groq, OpenAI GPT).
+        \item Cơ chế tái xếp hạng (\textit{Re-ranking}) sản phẩm kết hợp giữa suy luận logic và dữ liệu thương mại điện tử thực tế.
+        \item Kỹ thuật thu thập dữ liệu web tự động (\textit{Web Scraping}) và lưu trữ dữ liệu trên hệ CSDL phân tán TiDB Cloud.
+        \item Kiến trúc phần mềm phân tầng chịu lỗi, cơ chế xoay vòng khóa API, Connection Pooling và lưu đệm trên bộ nhớ RAM.
+    \end{itemize}
+    \item \textbf{Đối tượng sử dụng:} Người tiêu dùng cá nhân có nhu cầu tìm kiếm ý tưởng quà tặng độc đáo, tinh tế cho người thân, bạn bè, đồng nghiệp hoặc đối tác trong các dịp kỷ niệm tại Việt Nam.
+\end{itemize}
+
+\subsection{Phạm vi chức năng và dữ liệu}
+
+\begin{itemize}[leftmargin=1.2cm, itemsep=2pt]
+    \item \textbf{Phạm vi chức năng:} Hệ thống tập trung vào các chức năng tiếp nhận nhu cầu, phân tích tiêu chí, gợi ý quà tặng, hiển thị thông tin sản phẩm, lưu trữ quà yêu thích, điều hướng liên kết mua hàng, tạo thiệp mừng và tạo hộp quà kỷ niệm. Hệ thống đóng vai trò tư vấn và điều hướng; không can thiệp vào quy trình thanh toán trực tiếp, lưu kho hay vận chuyển hàng hóa của các sàn TMĐT.
+    
+    \item \textbf{Phạm vi dữ liệu:} Tập trung vào các danh mục sản phẩm thời trang, phụ kiện, mỹ phẩm, đồ gia dụng thông minh, công nghệ, quà lưu niệm và thủ công mỹ nghệ được phân phối trên các sàn thương mại điện tử phổ biến tại thị trường Việt Nam (Shopee, Lazada, Tiki).
+\end{itemize}
+
+\subsection{Phạm vi giải pháp Trí tuệ Nhân tạo}
+
+Đồ án ứng dụng Trí tuệ Nhân tạo ở cấp độ tích hợp và kỹ nghệ mô hình lớn (\textit{LLM Application Engineering}):
+\begin{itemize}[leftmargin=1.2cm, itemsep=2pt]
+    \item Sử dụng các API thương mại và mã nguồn mở hiệu năng cao (Google GenAI SDK cho Gemini 3.8 Flash, Groq LPU API, và OpenAI SDK cho GPT-4o-mini).
+    \item Đồ án không tự huấn luyện lại (\textit{Pre-train}) mô hình nền tảng từ đầu do đòi hỏi tài nguyên tính toán siêu máy tính, mà tập trung vào tối ưu hóa Prompt, kiểm soát định dạng đầu ra có cấu trúc (\textit{JSON Structured Output}) và xây dựng tầng điều phối chịu lỗi trung gian (\textit{AI Orchestration}).
+\end{itemize}
+
+% =========================================================
+% 1.4 PHƯƠNG PHÁP NGHIÊN CỨU
+% =========================================================
+
+\section{Phương pháp nghiên cứu}
+
+Để hoàn thành các mục tiêu đã đề ra, đồ án áp dụng kết hợp các phương pháp nghiên cứu sau:
+\begin{enumerate}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Phương pháp nghiên cứu tài liệu:} Khảo cứu các công trình khoa học về Hệ thống khuyến nghị (\textit{Recommender Systems}), các kỹ thuật Prompt Engineering, kiến trúc Transformer và tài liệu chính thức từ Google DeepMind, PingCAP (TiDB) và Meta Open Source.
+    
+    \item \textbf{Phương pháp phân tích và thiết kế phần mềm:} Áp dụng quy trình phân tích ca sử dụng (\textit{Use Case}), thiết kế kiến trúc phân tầng (\textit{Layered Architecture}), mô hình hóa dữ liệu quan hệ (ERD 6 bảng) và mô hình hóa hệ thống bằng các biểu đồ chuẩn UML.
+    
+    \item \textbf{Phương pháp thực nghiệm và đánh giá:} Cài đặt trực tiếp hệ thống trên môi trường Cloud thực tế (Vercel, Render, TiDB Cloud), thử nghiệm với các kịch bản người dùng biên, đo lường định lượng thời gian đáp ứng và khảo sát trải nghiệm thực tế từ 30 người dùng theo thang đo chuẩn quốc tế SUS (\textit{System Usability Scale}).
+\end{enumerate}
+
+% =========================================================
+% 1.5 BỐ CỤC BÁO CÁO
+% =========================================================
+
+\section{Bố cục báo cáo}
+
+Toàn bộ nội dung báo cáo đồ án được kết cấu thành bảy chương chính theo đúng quy chuẩn học thuật:
+
+\begin{itemize}[leftmargin=1.2cm, itemsep=3pt]
+    \item \textbf{Chương I -- Mở đầu:} Trình bày bối cảnh thực tiễn, lý do chọn đề tài, mục tiêu, đối tượng, phạm vi nghiên cứu, phương pháp tiếp cận và bố cục tổng thể của báo cáo.
+    \item \textbf{Chương II -- Cơ sở lý thuyết và công nghệ liên quan:} Giới thiệu các kiến thức nền tảng về Mô hình Ngôn ngữ Lớn, kỹ thuật Prompt Engineering, Semantic Re-ranking, In-Memory Caching, Web Scraping cùng bảng tổng hợp công nghệ triển khai (React 19, Node.js, TiDB Cloud, Gemini 3.8 Flash).
+    \item \textbf{Chương III -- Phân tích và thiết kế hệ thống:} Mô tả kiến trúc luồng dữ liệu khép kín trên Cloud, thiết kế chi tiết 6 bảng cơ sở dữ liệu TiDB Cloud, sơ đồ quan hệ thực thể (ERD), kỹ thuật Connection Pooling, đặc tả 10 ca sử dụng và các sơ đồ tương tác UML.
+    \item \textbf{Chương IV -- Đặc thù và giải pháp Trí tuệ Nhân tạo:} Phân tích đặc thù bài toán quà tặng, mô hình hóa toán học không gian ý định, quy trình Prompt 2 pha, kiến trúc điều phối 4 tầng (Cache RAM, Multi-key Rotation, Gemini 3.8 Flash, Fallback Groq/OpenAI) và nguyên lý AI giải thích được (XAI).
+    \item \textbf{Chương V -- Cài đặt và thực nghiệm:} Trình bày môi trường máy chủ và tham số kết nối Cloud, hiện thực hóa các màn hình giao diện Web/Mobile, xây dựng bộ 8 kịch bản kiểm thử (Test Cases) và đo lường thời gian đáp ứng thực nghiệm.
+    \item \textbf{Chương VI -- Kết quả và đánh giá:} Đối chiếu kết quả với các mục tiêu đề ra, công bố kết quả khảo sát trải nghiệm người dùng theo thang đo SUS (đạt 84.6 điểm -- Hạng A), so sánh đối chuẩn (Benchmarking) và phân tích tiềm năng thương mại hóa.
+    \item \textbf{Chương VII -- Kết luận và hướng phát triển:} Tổng kết các đóng góp nổi bật của đề tài, đúc kết các bài học kinh nghiệm và vạch ra lộ trình nâng cấp hệ thống trong tương lai.
+\end{itemize}

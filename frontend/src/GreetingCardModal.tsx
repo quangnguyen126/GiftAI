@@ -590,12 +590,19 @@ export function GreetingCardModal({
                   >
                     <option>Sinh nhật</option>
                     <option>Valentine</option>
+                    <option>Valentine Trắng 14/3</option>
+                    <option>8/3 & 20/10</option>
+                    <option>Ngày của Mẹ</option>
+                    <option>Ngày của Cha</option>
                     <option>Kỷ niệm</option>
                     <option>Giáng sinh</option>
+                    <option>Tết & Năm mới</option>
                     <option>Tốt nghiệp</option>
-                    <option>8/3 & 20/10</option>
-                    <option>Năm mới</option>
+                    <option>Tân gia</option>
+                    <option>Khai trương / Thăng chức</option>
+                    <option>Quốc tế Thiếu nhi & Trung Thu</option>
                     <option>Cảm ơn / Tri ân</option>
+                    <option>Hòa giải / Chia tay văn minh / Chúc bình an</option>
                   </select>
                 </div>
 

@@ -1279,7 +1279,32 @@ function evaluateProductForGoals(row, goals = null, cleanItems = [], searchQueri
   const recipientCode = goals?.recipientCode || "";
   const effectiveGender = goals?.effectiveGender || "";
 
-  if (recipientCode === "female_partner" || recipientCode === "female_peer") {
+  if (recipientCode === "ex_partner" || occasionCode === "apology_ex") {
+    const blockedCatsForEx = new Set([
+      "quà valentine & kỷ niệm",
+      "hoa & quà lãng mạn",
+    ]);
+    if (blockedCatsForEx.has(catLower)) {
+      return { suitable: false, reason: "wrong_category_for_ex_partner" };
+    }
+    const blockedWordsForEx = [
+      "nhẫn đôi",
+      "hoa hồng sáp",
+      "socola valentine",
+      "dây chuyền trái tim",
+      "tình nhân",
+      "vợ yêu",
+      "chồng yêu",
+      "bạn gái yêu",
+      "ngọt ngào tình yêu",
+      "lãng mạn kỷ niệm",
+    ];
+    for (const w of blockedWordsForEx) {
+      if (nameLower.includes(w)) {
+        return { suitable: false, reason: `romantic_item_not_allowed_for_ex:${w}` };
+      }
+    }
+  } else if (recipientCode === "female_partner" || recipientCode === "female_peer") {
     const blockedCatsForYoungFemale = new Set([
       "phụ kiện nam",
       "đồng hồ & phụ kiện nam",
@@ -3049,15 +3074,69 @@ function detectGiftGoals({
     occasionKeywords = ["8/3", "20/10", "phụ nữ", "bạn gái", "hộp quà", "set quà"];
     impliedGenderFromOccasion = "Nữ";
   } else if (
+    fullText.includes("ngày của mẹ") ||
+    fullText.includes("mother's day") ||
+    fullText.includes("mothers day")
+  ) {
+    occasionCode = "mothers_day";
+    occasionLabel = "Ngày của Mẹ (Mother's Day)";
+    occasionKeywords = ["ngày của mẹ", "mẹ", "sức khỏe", "yến sào", "khăn lụa", "massage", "chăm sóc"];
+    impliedGenderFromOccasion = "Nữ";
+  } else if (
+    fullText.includes("ngày của cha") ||
+    fullText.includes("ngày của bố") ||
+    fullText.includes("father's day") ||
+    fullText.includes("fathers day")
+  ) {
+    occasionCode = "fathers_day";
+    occasionLabel = "Ngày của Cha (Father's Day)";
+    occasionKeywords = ["ngày của cha", "bố", "cha", "sức khỏe", "máy cạo râu", "ấm trà", "huyết áp"];
+    impliedGenderFromOccasion = "Nam";
+  } else if (
+    fullText.includes("valentine trắng") ||
+    fullText.includes("white valentine") ||
+    fullText.includes("14/3") ||
+    fullText.includes("14-3")
+  ) {
+    occasionCode = "white_valentine";
+    occasionLabel = "Valentine Trắng 14/3";
+    occasionKeywords = ["valentine trắng", "14/3", "socola", "bánh quy", "người yêu", "đáp lễ"];
+  } else if (
     fullText.includes("valentine") ||
     fullText.includes("14/2") ||
     fullText.includes("14-2") ||
-    fullText.includes("lễ tình nhân") ||
-    fullText.includes("14/3")
+    fullText.includes("lễ tình nhân")
   ) {
     occasionCode = "valentine";
     occasionLabel = "Lễ Tình Nhân Valentine";
     occasionKeywords = ["valentine", "14/2", "tình nhân", "socola", "hoa sáp", "người yêu"];
+  } else if (
+    fullText.includes("thiếu nhi") ||
+    fullText.includes("1/6") ||
+    fullText.includes("1-6") ||
+    fullText.includes("trung thu")
+  ) {
+    occasionCode = "childrens_day";
+    occasionLabel = "Quốc tế Thiếu nhi 1/6 & Trung Thu";
+    occasionKeywords = ["thiếu nhi", "1/6", "trung thu", "đèn lồng", "lego", "đồ chơi", "gấu bông"];
+  } else if (
+    fullText.includes("khai trương") ||
+    fullText.includes("mở quán") ||
+    fullText.includes("mở cửa hàng")
+  ) {
+    occasionCode = "opening";
+    occasionLabel = "Mừng Khai Trương";
+    occasionKeywords = ["khai trương", "mèo thần tài", "thuận buồm xuôi gió", "phong thủy", "tài lộc"];
+  } else if (
+    fullText.includes("chia tay") ||
+    fullText.includes("hòa giải") ||
+    fullText.includes("xin lỗi") ||
+    fullText.includes("làm lành") ||
+    fullText.includes("chữa lành")
+  ) {
+    occasionCode = "apology_ex";
+    occasionLabel = "Hòa giải / Chia tay văn minh / Chúc bình an";
+    occasionKeywords = ["chữa lành", "bình an", "sách", "nến thơm", "trà thảo mộc", "tinh tế"];
   } else if (
     fullText.includes("20/11") ||
     fullText.includes("20-11") ||
@@ -3139,12 +3218,73 @@ function detectGiftGoals({
       ? "Nam"
       : impliedGenderFromOccasion || "";
 
+  // 2.1. Nhận diện NGƯỜI YÊU CŨ (EX) ĐẦU TIÊN để tránh bị nhầm sang người yêu hiện tại!
   if (
+    fullText.includes("người yêu cũ") ||
+    fullText.includes("nyc") ||
+    fullText.includes("tình cũ") ||
+    fullText.includes("bồ cũ") ||
+    fullText.includes("ex-lover") ||
+    hasWholeWord(fullText, "ex") ||
+    relNorm.includes("người yêu cũ") ||
+    relNorm.includes("nyc") ||
+    relNorm.includes("ex")
+  ) {
+    recipientCode = "ex_partner";
+    recipientLabel = "Người yêu cũ (Ex)";
+    recipientKeywords = ["người yêu cũ", "chữa lành", "bình an", "tinh tế", "sách", "nến thơm", "trà thảo mộc", "bình giữ nhiệt"];
+  } else if (
+    fullText.includes("em trai") ||
+    relNorm === "em trai"
+  ) {
+    recipientCode = "younger_brother";
+    recipientLabel = "Em trai";
+    effectiveGender = "Nam";
+    recipientKeywords = ["em trai", "gaming", "bàn phím cơ", "lego", "tai nghe", "balo", "thể thao"];
+  } else if (
+    fullText.includes("em gái") ||
+    relNorm === "em gái"
+  ) {
+    recipientCode = "younger_sister";
+    recipientLabel = "Em gái";
+    effectiveGender = "Nữ";
+    recipientKeywords = ["em gái", "gấu bông", "cute", "dễ thương", "kẹp tóc", "capybara", "hộp bút", "máy ảnh"];
+  } else if (
+    fullText.includes("anh trai") ||
+    relNorm === "anh trai"
+  ) {
+    recipientCode = "older_brother";
+    recipientLabel = "Anh trai";
+    effectiveGender = "Nam";
+    recipientKeywords = ["anh trai", "ví da", "thắt lưng", "tai nghe", "áo polo", "bình giữ nhiệt", "gym"];
+  } else if (
+    fullText.includes("chị gái") ||
+    relNorm === "chị gái"
+  ) {
+    recipientCode = "older_sister";
+    recipientLabel = "Chị gái";
+    effectiveGender = "Nữ";
+    recipientKeywords = ["chị gái", "mỹ phẩm", "dưỡng da", "nước hoa", "vòng tay", "nến thơm", "massage"];
+  } else if (
+    fullText.includes("trẻ em") ||
+    fullText.includes("bé trai") ||
+    fullText.includes("bé gái") ||
+    fullText.includes("cháu") ||
+    fullText.includes("con nít") ||
+    fullText.includes("thiếu nhi") ||
+    relNorm.includes("trẻ em") ||
+    relNorm.includes("con cái")
+  ) {
+    recipientCode = "kids";
+    recipientLabel = "Trẻ em / Bé trai / Bé gái";
+    recipientKeywords = ["trẻ em", "bé trai", "bé gái", "đồ chơi", "lego", "gấu bông", "thiếu nhi"];
+  } else if (
     hasWholeWord(fullText, "mẹ") ||
     hasWholeWord(fullText, "má") ||
     hasWholeWord(fullText, "bà") ||
     fullText.includes("mẫu thân") ||
-    (relNorm.includes("bố / mẹ") && effectiveGender === "Nữ" && !hasWholeWord(descNorm, "bố"))
+    (relNorm.includes("bố / mẹ") && effectiveGender === "Nữ" && !hasWholeWord(descNorm, "bố")) ||
+    relNorm === "mẹ"
   ) {
     recipientCode = "mother";
     recipientLabel = "Mẹ / Bà";
@@ -3155,7 +3295,8 @@ function detectGiftGoals({
     hasWholeWord(fullText, "ba") ||
     hasWholeWord(fullText, "cha") ||
     hasWholeWord(fullText, "ông") ||
-    (relNorm.includes("bố / mẹ") && effectiveGender === "Nam")
+    (relNorm.includes("bố / mẹ") && effectiveGender === "Nam") ||
+    relNorm === "bố"
   ) {
     recipientCode = "father";
     recipientLabel = "Bố / Ông";
@@ -3177,11 +3318,13 @@ function detectGiftGoals({
     fullText.includes("bà xã") ||
     hasWholeWord(fullText, "nàng") ||
     fullText.includes("crush nữ") ||
+    relNorm === "bạn gái" ||
+    relNorm === "vợ" ||
     ((fullText.includes("người yêu") || fullText.includes("crush") || relNorm.includes("vợ / chồng")) &&
       effectiveGender !== "Nam")
   ) {
     recipientCode = "female_partner";
-    recipientLabel = hasWholeWord(fullText, "vợ") ? "Vợ" : "Bạn gái / Người yêu";
+    recipientLabel = hasWholeWord(fullText, "vợ") || relNorm === "vợ" ? "Vợ" : "Bạn gái / Người yêu";
     effectiveGender = "Nữ";
     recipientKeywords = ["bạn gái", "người yêu", "nữ", "vợ", "lãng mạn"];
   } else if (
@@ -3191,14 +3334,16 @@ function detectGiftGoals({
     fullText.includes("ông xã") ||
     hasWholeWord(fullText, "chàng") ||
     fullText.includes("crush nam") ||
+    relNorm === "bạn trai" ||
+    relNorm === "chồng" ||
     ((fullText.includes("người yêu") || fullText.includes("crush") || relNorm.includes("vợ / chồng")) &&
       effectiveGender === "Nam")
   ) {
     recipientCode = "male_partner";
-    recipientLabel = hasWholeWord(fullText, "chồng") ? "Chồng" : "Bạn trai / Người yêu";
+    recipientLabel = hasWholeWord(fullText, "chồng") || relNorm === "chồng" ? "Chồng" : "Bạn trai / Người yêu";
     effectiveGender = "Nam";
     recipientKeywords = ["bạn trai", "nam", "chồng", "lịch lãm"];
-  } else if (fullText.includes("cô giáo")) {
+  } else if (fullText.includes("cô giáo") || relNorm === "cô giáo") {
     recipientCode = "female_teacher";
     recipientLabel = "Cô giáo";
     effectiveGender = "Nữ";
@@ -3206,7 +3351,8 @@ function detectGiftGoals({
   } else if (
     fullText.includes("thầy giáo") ||
     fullText.includes("thầy cô") ||
-    fullText.includes("giáo viên")
+    fullText.includes("giáo viên") ||
+    relNorm.includes("thầy / cô giáo")
   ) {
     recipientCode = "teacher";
     recipientLabel = "Thầy / Cô giáo";
@@ -3215,43 +3361,12 @@ function detectGiftGoals({
     hasWholeWord(fullText, "sếp") ||
     fullText.includes("lãnh đạo") ||
     fullText.includes("đối tác") ||
-    fullText.includes("khách hàng")
+    fullText.includes("khách hàng") ||
+    relNorm.includes("sếp")
   ) {
     recipientCode = "boss";
     recipientLabel = "Sếp / Đối tác";
     recipientKeywords = ["sếp", "công sở", "cao cấp", "bút ký", "trà"];
-  } else if (
-    fullText.includes("chị gái") ||
-    fullText.includes("em gái") ||
-    fullText.includes("bạn nữ") ||
-    fullText.includes("bạn thân nữ") ||
-    fullText.includes("đồng nghiệp nữ") ||
-    ((fullText.includes("bạn") || fullText.includes("đồng nghiệp") || fullText.includes("anh / chị / em")) &&
-      effectiveGender === "Nữ")
-  ) {
-    recipientCode = "female_peer";
-    recipientLabel = fullText.includes("chị")
-      ? "Chị gái"
-      : fullText.includes("em gái")
-      ? "Em gái"
-      : "Bạn nữ / Đồng nghiệp nữ";
-    effectiveGender = "Nữ";
-    recipientKeywords = ["nữ", "bạn gái", "20/10", "8/3", "dễ thương"];
-  } else if (
-    fullText.includes("anh trai") ||
-    fullText.includes("em trai") ||
-    fullText.includes("bạn nam") ||
-    ((fullText.includes("bạn") || fullText.includes("đồng nghiệp") || fullText.includes("anh / chị / em")) &&
-      effectiveGender === "Nam")
-  ) {
-    recipientCode = "male_peer";
-    recipientLabel = fullText.includes("em trai")
-      ? "Em trai"
-      : fullText.includes("anh trai")
-      ? "Anh trai"
-      : "Bạn nam / Đồng nghiệp nam";
-    effectiveGender = "Nam";
-    recipientKeywords = ["nam", "bạn trai", "công nghệ", "thể thao"];
   } else if (
     fullText.includes("bạn") ||
     fullText.includes("đồng nghiệp")
@@ -3400,7 +3515,204 @@ function detectGiftGoals({
   let goalSearchQueries = [];
   let forbiddenTerms = [];
 
-  if (recipientCode === "female_partner") {
+  // 6.1. NGƯỜI YÊU CŨ (EX) HOẶC DỊP CHIA TAY / HÒA GIẢI / CHỮA LÀNH
+  if (recipientCode === "ex_partner" || occasionCode === "apology_ex") {
+    goalCategories = [
+      "Sách & Tri Thức",
+      "Nến Thơm & Thư Giãn",
+      "Trà & Sức Khỏe",
+      "Văn Phòng & Cafe",
+      "Văn Phòng & Đời Sống",
+      "Gấu Bông & Quà Cute",
+    ];
+    forbiddenTerms = [
+      "nhẫn đôi",
+      "hoa hồng sáp",
+      "socola valentine",
+      "dây chuyền trái tim",
+      "lãng mạn",
+      "tình yêu",
+      "tình nhân",
+      "vợ yêu",
+      "chồng yêu",
+      "bạn gái yêu",
+    ];
+    goalItems = [
+      "sách hiểu về trái tim",
+      "nến thơm thư giãn",
+      "trà thảo mộc an thần",
+      "bình giữ nhiệt lock&lock",
+      "sổ tay da tối giản",
+      "bút ký kim loại",
+      "gấu bông capybara",
+    ];
+    goalSearchQueries = [
+      "sách hiểu về trái tim minh niệm",
+      "nến thơm tinh dầu hoa oải hương thư giãn xoa dịu tâm trí",
+      "trà hoa cúc thảo mộc an thần dễ ngủ",
+      "bình giữ nhiệt lock&lock inox 304 cao cấp",
+    ];
+  } else if (recipientCode === "younger_brother") {
+    goalCategories = [
+      "Gaming & Công Nghệ",
+      "Đồ Chơi & Mô Hình",
+      "Thời Trang Nam",
+      "Công Nghệ & Âm Thanh",
+      "Thể Thao & Sức Khỏe",
+    ];
+    forbiddenTerms = [
+      "son môi",
+      "son dưỡng",
+      "váy",
+      "khăn lụa",
+      "bông tai",
+      "chống lão hóa",
+      "người già",
+      "cao tuổi",
+      "máy đo huyết áp",
+    ];
+    goalItems = [
+      "bàn phím cơ rgb",
+      "tai nghe gaming có mic",
+      "chuột gaming không dây",
+      "bộ lego xe đua",
+      "balo nam đi học",
+      "áo hoodie nam",
+      "bình nước thể thao",
+    ];
+    goalSearchQueries = [
+      "bàn phím cơ không dây switch hotswap rgb",
+      "tai nghe gaming có mic chống ồn",
+      "bộ xếp hình lego kỹ thuật xe đua mô hình",
+      "balo nam đi học chống nước đựng laptop",
+    ];
+  } else if (recipientCode === "younger_sister") {
+    goalCategories = [
+      "Gấu Bông & Quà Cute",
+      "Mỹ Phẩm & Làm Đẹp",
+      "Trang Sức & Phụ Kiện Nữ",
+      "Thời Trang Nữ",
+      "Công Nghệ & Nhiếp Ảnh",
+      "Văn Phòng & Đời Sống",
+    ];
+    forbiddenTerms = [
+      "cạo râu",
+      "ví da nam",
+      "thắt lưng da nam",
+      "trung niên",
+      "chống lão hóa",
+      "người già",
+      "máy đo huyết áp",
+    ];
+    goalItems = [
+      "gấu bông capybara",
+      "máy chụp ảnh mini",
+      "bộ cọ trang điểm",
+      "hộp bút đa năng cute",
+      "kẹp tóc nơ xinh xắn",
+      "balo nữ mini",
+      "gương trang điểm đèn led",
+    ];
+    goalSearchQueries = [
+      "gấu bông capybara rút nước mũi đáng yêu",
+      "máy chụp ảnh mini lấy liền cho học sinh",
+      "bộ cọ trang điểm cá nhân mini hộp quà",
+      "hộp bút đa năng nhiều ngăn cute học sinh",
+    ];
+  } else if (recipientCode === "older_brother") {
+    goalCategories = [
+      "Phụ Kiện Nam",
+      "Công Nghệ & Âm Thanh",
+      "Thời Trang Nam",
+      "Chăm Sóc Nam Giới",
+      "Văn Phòng & Cafe",
+      "Đèn Decor & Gaming",
+    ];
+    forbiddenTerms = [
+      "son môi",
+      "son dưỡng",
+      "váy",
+      "khăn lụa",
+      "bông tai",
+      "kẹp tóc",
+      "nước hoa nữ",
+    ];
+    goalItems = [
+      "ví da bò nam",
+      "tai nghe chống ồn anc",
+      "áo polo nam cao cấp",
+      "sáp vuốt tóc nam",
+      "bình giữ nhiệt lock&lock",
+      "đèn led kẹp màn hình",
+      "thắt lưng nam da bò",
+    ];
+    goalSearchQueries = [
+      "ví da bò nam sáp dáng đứng nhỏ gọn",
+      "tai nghe bluetooth chống ồn chủ động anc",
+      "áo polo nam phối màu thoáng khí cao cấp",
+      "sáp vuốt tóc nam chính hãng giữ nếp tốt",
+    ];
+  } else if (recipientCode === "older_sister") {
+    goalCategories = [
+      "Mỹ Phẩm & Làm Đẹp",
+      "Nước Hoa & Làm Đẹp",
+      "Trang Sức & Phụ Kiện Nữ",
+      "Nến Thơm & Thư Giãn",
+      "Thời Trang Nữ",
+      "Chăm Sóc Sức Khỏe",
+    ];
+    forbiddenTerms = [
+      "cạo râu",
+      "ví da nam",
+      "thắt lưng nam",
+      "áo polo nam",
+      "cà vạt",
+      "gaming",
+    ];
+    goalItems = [
+      "set son dưỡng cao cấp",
+      "máy massage mắt",
+      "máy xông tinh dầu",
+      "nước hoa nữ",
+      "vòng tay bạc cỏ 4 lá",
+      "túi tote vải canvas",
+      "nến thơm tinh dầu",
+    ];
+    goalSearchQueries = [
+      "set son dưỡng môi có màu cao cấp hàn quốc",
+      "máy massage mắt giảm thâm quầng mỏi mắt",
+      "máy xông tinh dầu phun sương tạo ẩm phòng ngủ",
+      "vòng tay bạc nữ cỏ bốn lá may mắn",
+    ];
+  } else if (recipientCode === "kids" || occasionCode === "childrens_day") {
+    goalCategories = [
+      "Đồ Chơi & Mô Hình",
+      "Gấu Bông & Quà Cute",
+      "Lễ Hội & Sự Kiện",
+    ];
+    forbiddenTerms = [
+      "cạo râu",
+      "ví da nam",
+      "thắt lưng",
+      "chống lão hóa",
+      "mỹ phẩm",
+      "rượu",
+      "bút ký",
+      "công sở",
+    ];
+    goalItems = [
+      "đồ chơi lego lắp ráp",
+      "bộ màu sáp vẽ tranh",
+      "đèn lồng trung thu",
+      "gấu bông capybara",
+    ];
+    goalSearchQueries = [
+      "đồ chơi lắp ráp mô hình lego cho bé",
+      "bộ màu sáp vẽ tranh cho trẻ em cao cấp",
+      "đèn lồng trung thu phát sáng có nhạc",
+      "gấu bông capybara dễ thương",
+    ];
+  } else if (recipientCode === "female_partner") {
     goalCategories = [
       "Quà 20/10 & 8/3",
       "Hoa & Quà Lãng Mạn",

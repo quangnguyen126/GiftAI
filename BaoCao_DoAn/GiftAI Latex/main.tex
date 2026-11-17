@@ -1,0 +1,749 @@
+\documentclass[12pt,a4paper]{report}
+
+% =========================================================
+% 1. TIẾNG VIỆT
+% =========================================================
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+
+
+% =========================================================
+% 2. CẤU HÌNH TRANG
+% =========================================================
+
+\usepackage[
+    left=3cm,
+    right=2cm,
+    top=2.5cm,
+    bottom=2.5cm,
+    headheight=15pt
+]{geometry}
+
+\usepackage{setspace}
+\onehalfspacing
+
+
+% =========================================================
+% 3. MÀU SẮC (ĐẶT TRƯỚC TIKZ)
+% =========================================================
+
+\usepackage[table]{xcolor}
+
+% ----- Màu xanh -----
+\definecolor{PrimaryBlue}{HTML}{1565C0}
+\definecolor{DarkBlue}{HTML}{0D47A1}
+\definecolor{LightBlue}{HTML}{E3F2FD}
+
+% ----- Màu xanh lá -----
+\definecolor{PrimaryGreen}{HTML}{2E7D32}
+\definecolor{LightGreen}{HTML}{E8F5E9}
+
+% ----- Màu cam -----
+\definecolor{PrimaryOrange}{HTML}{EF6C00}
+\definecolor{LightOrange}{HTML}{FFF3E0}
+
+% ----- Màu đỏ -----
+\definecolor{PrimaryRed}{HTML}{C62828}
+\definecolor{LightRed}{HTML}{FFEBEE}
+
+% ----- Màu xám -----
+\definecolor{DarkGray}{HTML}{37474F}
+\definecolor{GrayBackground}{HTML}{F5F7FA}
+\definecolor{TableGray}{HTML}{ECEFF1}
+
+
+% =========================================================
+% 4. HÌNH ẢNH
+% =========================================================
+
+\usepackage{graphicx}
+%\usepackage{svg}
+\usepackage{float}
+\usepackage{subcaption}
+
+
+% =========================================================
+% 5. BẢNG
+% =========================================================
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{adjustbox}
+
+
+% =========================================================
+% 6. TOÁN HỌC
+% =========================================================
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+% =========================================================
+% 7. TIKZ VÀ THƯ VIỆN
+% =========================================================
+
+\usepackage{tikz}
+
+\usetikzlibrary{
+    positioning,
+    arrows.meta,
+    shapes.geometric,
+    shapes.misc,
+    calc,
+    fit
+}
+
+
+% =========================================================
+% 8. TIKZ STYLES
+% =========================================================
+
+\tikzset{
+    system/.style={
+        rectangle,
+        rounded corners=5pt,
+        draw=DarkBlue,
+        fill=LightBlue,
+        line width=1pt,
+        minimum width=3.8cm,
+        minimum height=1cm,
+        align=center,
+        inner sep=6pt,
+        font=\small
+    },
+    process/.style={
+        rectangle,
+        rounded corners=5pt,
+        draw=PrimaryBlue,
+        fill=LightBlue,
+        line width=1pt,
+        minimum width=4cm,
+        minimum height=1cm,
+        align=center,
+        inner sep=6pt,
+        font=\small
+    },
+    api/.style={
+        rectangle,
+        rounded corners=5pt,
+        draw=PrimaryOrange,
+        fill=LightOrange,
+        line width=1pt,
+        minimum width=4cm,
+        minimum height=1cm,
+        align=center,
+        inner sep=6pt,
+        font=\small
+    },
+    ai/.style={
+        rectangle,
+        rounded corners=5pt,
+        draw=PrimaryGreen,
+        fill=LightGreen,
+        line width=1pt,
+        minimum width=4cm,
+        minimum height=1cm,
+        align=center,
+        inner sep=6pt,
+        font=\small
+    },
+    database/.style={
+        cylinder,
+        shape border rotate=90,
+        aspect=0.25,
+        draw=DarkBlue,
+        fill=LightBlue,
+        line width=1pt,
+        minimum width=3.2cm,
+        minimum height=1.2cm,
+        align=center,
+        font=\small
+    },
+    usecase/.style={
+        ellipse,
+        draw=PrimaryBlue,
+        fill=LightBlue,
+        line width=1pt,
+        minimum width=3.8cm,
+        minimum height=1cm,
+        align=center,
+        inner sep=5pt,
+        font=\small
+    },
+    actor/.style={
+        rectangle,
+        rounded corners=3pt,
+        draw=DarkGray,
+        fill=white,
+        line width=1pt,
+        minimum width=2.5cm,
+        minimum height=0.8cm,
+        align=center,
+        font=\small
+    },
+    decision/.style={
+        diamond,
+        aspect=2,
+        draw=PrimaryOrange,
+        fill=LightOrange,
+        line width=1pt,
+        minimum width=3.2cm,
+        minimum height=1.2cm,
+        align=center,
+        inner sep=3pt,
+        font=\small
+    },
+    arrow/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        line width=0.9pt,
+        draw=DarkGray
+    },
+    arrowBlue/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        line width=0.9pt,
+        draw=PrimaryBlue
+    },
+    arrowGreen/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        line width=0.9pt,
+        draw=PrimaryGreen
+    },
+    arrowOrange/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        line width=0.9pt,
+        draw=PrimaryOrange
+    },
+    flow/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        line width=0.9pt,
+        draw=DarkGray,
+        rounded corners=4pt
+    },
+    dashedarrow/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        dashed,
+        line width=0.8pt,
+        draw=DarkGray
+    },
+    dependency/.style={
+        -{Stealth[length=3mm,width=2mm]},
+        dashed,
+        line width=0.8pt,
+        draw=DarkGray
+    },
+    lifeline/.style={
+        dashed,
+        line width=0.7pt,
+        draw=DarkGray
+    },
+    labeltext/.style={
+        font=\scriptsize,
+        fill=white,
+        inner sep=2pt,
+        text=DarkGray
+    }
+}
+
+
+% =========================================================
+% 9. TCOLORBOX VÀ CÁC HỘP THÔNG BÁO
+% =========================================================
+
+\usepackage[most]{tcolorbox}
+
+\newtcolorbox{infobox}{
+    colback=LightBlue,
+    colframe=PrimaryBlue,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\newtcolorbox{successbox}{
+    colback=LightGreen,
+    colframe=PrimaryGreen,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\newtcolorbox{warningbox}{
+    colback=LightOrange,
+    colframe=PrimaryOrange,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+\newtcolorbox{errorbox}{
+    colback=LightRed,
+    colframe=PrimaryRed,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=8pt,
+    right=8pt,
+    top=8pt,
+    bottom=8pt
+}
+
+
+% =========================================================
+% 10. LISTINGS - CODE
+% =========================================================
+
+\usepackage{listings}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{DarkGray},
+    showstringspaces=false,
+    backgroundcolor=\color{GrayBackground},
+    keywordstyle=\color{PrimaryBlue},
+    commentstyle=\color{PrimaryGreen},
+    stringstyle=\color{black},
+    framexleftmargin=5mm,
+    xleftmargin=5mm,
+    tabsize=4
+}
+
+
+% =========================================================
+% 11. DANH SÁCH & CĂN LỀ BẢNG
+% =========================================================
+
+\usepackage{enumitem}
+
+\setlist[itemize]{
+    itemsep=3pt,
+    topsep=4pt
+}
+
+\setlist[enumerate]{
+    itemsep=3pt,
+    topsep=4pt
+}
+
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\emergencystretch=3em
+
+
+% =========================================================
+% 12. HEADER / FOOTER
+% =========================================================
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[L]{
+    \textcolor{PrimaryBlue}{
+        \textbf{HỆ THỐNG GỢI Ý QUÀ TẶNG THÔNG MINH (GIFTAI)}
+    }
+}
+
+\fancyhead[R]{
+    \textcolor{DarkGray}{
+        Báo cáo đồ án
+    }
+}
+
+\fancyfoot[C]{
+    \textcolor{DarkGray}{
+        \thepage
+    }
+}
+
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyhead[L]{
+        \textcolor{PrimaryBlue}{
+            \textbf{HỆ THỐNG GỢI Ý QUÀ TẶNG THÔNG MINH (GIFTAI)}
+        }
+    }
+    \fancyhead[R]{
+        \textcolor{DarkGray}{
+            Báo cáo đồ án
+        }
+    }
+    \fancyfoot[C]{
+        \textcolor{DarkGray}{
+            \thepage
+        }
+    }
+    \renewcommand{\headrulewidth}{0.5pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+
+
+% =========================================================
+% 13. ĐỊNH DẠNG SỐ LA MÃ CHO CHƯƠNG & SỐ Ả RẬP CHO MỤC/HÌNH/BẢNG
+% =========================================================
+
+% Chương đánh số La Mã: I, II, III, IV, V, VI, VII
+\renewcommand{\thechapter}{\Roman{chapter}}
+
+% Mục con, bảng biểu, hình ảnh giữ số Ả Rập gọn gàng: 3.1, Hình 3.1, Bảng 3.1
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{table}}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+{\bfseries\color{DarkBlue}}
+{\fontsize{18}{20}\selectfont CHƯƠNG \thechapter}
+{0.5em}
+{\fontsize{24}{28}\selectfont}
+
+\titleformat{\section}
+{\Large\bfseries\color{PrimaryBlue}}
+{\thesection}
+{0.7em}
+{}
+
+\titleformat{\subsection}
+{\large\bfseries\color{DarkGray}}
+{\thesubsection}
+{0.7em}
+{}
+
+\titleformat{\subsubsection}
+{\normalsize\bfseries\color{DarkGray}}
+{\thesubsubsection}
+{0.7em}
+{}
+
+
+% =========================================================
+% 14. HYPERREF & CẤU HÌNH LINK KHÔNG TRÀN LỀ
+% =========================================================
+
+\usepackage{url}
+% Cho phép ngắt dòng linh hoạt tại dấu gạch chéo / và gạch nối - trong URL
+\def\UrlBreaks{\do\/\do-\do.\do_}
+
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=DarkBlue,
+    citecolor=PrimaryGreen,
+    urlcolor=PrimaryBlue,
+    pdftitle={
+        Xây dựng hệ thống tìm quà tặng cho người thân yêu
+    },
+    pdfauthor={
+        Nguyễn Thiện Quân - Nguyễn Việt Quang
+    },
+    pdfsubject={
+        Báo cáo đồ án môn học Trí tuệ nhân tạo
+    },
+    pdfkeywords={
+        AI,
+        Gift Recommendation System,
+        Google Gemini 3.8 Flash,
+        Groq,
+        Prompt Engineering,
+        TiDB Cloud,
+        Vercel,
+        Render,
+        React 19,
+        Node.js,
+        GiftAI
+    },
+    bookmarksopen=true,
+    bookmarksnumbered=true
+}
+
+
+% =========================================================
+% 15. BẮT ĐẦU DOCUMENT
+% =========================================================
+
+\begin{document}
+
+\color{black}
+
+
+% =========================================================
+% TRANG BÌA
+% =========================================================
+
+\begin{titlepage}
+    \centering
+
+    % Khung viền trang bìa
+    \begin{tikzpicture}[remember picture, overlay]
+        \draw[line width=4pt, color=DarkBlue]
+        ([xshift=1.2cm,yshift=-1.2cm]current page.north west)
+        rectangle
+        ([xshift=-1.2cm,yshift=1.2cm]current page.south east);
+
+        \draw[line width=0.5pt, color=PrimaryBlue]
+        ([xshift=1.4cm,yshift=-1.4cm]current page.north west)
+        rectangle
+        ([xshift=-1.4cm,yshift=1.4cm]current page.south east);
+    \end{tikzpicture}
+
+    {\large
+    \textbf{TRƯỜNG ĐẠI HỌC KIẾN TRÚC ĐÀ NẴNG}
+    \par}
+
+    \vspace{0.5cm}
+
+    {\large
+    \textbf{KHOA CÔNG NGHỆ THÔNG TIN}
+    \par}
+    
+    \vspace{0.3cm}
+    \includegraphics[width=0.3\textwidth]{chapters/image/image.png}
+    
+    \vspace{1cm}
+
+    {\Large
+    \textbf{BÁO CÁO ĐỒ ÁN}
+    \par}
+
+    \vspace{1cm}
+
+    {\LARGE
+    \textbf{XÂY DỰNG HỆ THỐNG TÌM QUÀ TẶNG}
+    \par}
+
+    \vspace{0.2cm}
+
+    {\LARGE
+    \textbf{CHO NGƯỜI THÂN YÊU (GIFTAI)}
+    \par}
+
+    \vspace{1.2cm}
+
+    \begin{flushleft}
+        \hspace{2cm}
+        \begin{tabular}{ll}
+            \textbf{Sinh viên thực hiện:} & NGUYỄN THIỆN QUÂN \\[0.2cm]
+            & NGUYỄN VIỆT QUANG \\[0.3cm]
+            \textbf{Mã sinh viên:} & 2351220231 \\[0.2cm]
+            & 2351220268 \\[0.3cm]
+            \textbf{Lớp:} & 23CT2 \\[0.3cm]
+            \textbf{Giảng viên hướng dẫn:} & TS. Đỗ Phúc Hảo
+        \end{tabular}
+    \end{flushleft}
+
+    \vfill
+
+    {\large
+    Đà Nẵng, 2026
+    \par}
+\end{titlepage}
+
+
+% =========================================================
+% LỜI CAM ĐOAN
+% =========================================================
+
+\chapter*{LỜI CAM ĐOAN}
+\addcontentsline{toc}{chapter}{LỜI CAM ĐOAN}
+\input{chapters/loi_cam_doan}
+
+
+% =========================================================
+% LỜI CẢM ƠN
+% =========================================================
+
+\chapter*{LỜI CẢM ƠN}
+\addcontentsline{toc}{chapter}{LỜI CẢM ƠN}
+\input{chapters/loi_cam_on}
+
+
+% =========================================================
+% TÓM TẮT
+% =========================================================
+
+\chapter*{TÓM TẮT}
+\addcontentsline{toc}{chapter}{TÓM TẮT}
+\input{chapters/tom_tat}
+
+
+% =========================================================
+% MỤC LỤC & DANH MỤC
+% =========================================================
+
+\tableofcontents
+\newpage
+
+\listoffigures
+\addcontentsline{toc}{chapter}{DANH MỤC HÌNH}
+\newpage
+
+\listoftables
+\addcontentsline{toc}{chapter}{DANH MỤC BẢNG}
+\newpage
+
+
+% =========================================================
+% NỘI DUNG 7 CHƯƠNG BÁO CÁO (ĐÁNH SỐ LA MÃ)
+% =========================================================
+
+\input{chapters/chapter1}
+
+\input{chapters/chapter2}
+
+\input{chapters/chapter3}
+
+\input{chapters/chapter4}
+
+\input{chapters/chapter5}
+
+\input{chapters/chapter6}
+
+\input{chapters/chapter7}
+
+
+% =========================================================
+% TÀI LIỆU THAM KHẢO (ĐẦY ĐỦ LINK TRỰC TIẾP)
+% =========================================================
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
+
+\begin{thebibliography}{99}
+
+% --- Sách kinh điển & Giáo trình ---
+
+\bibitem{ai_russell}
+S. Russell and P. Norvig, 
+\textit{Artificial Intelligence: A Modern Approach}, 4th ed., 
+Hoboken, NJ: Pearson, 2020. 
+[Online]. Available: \url{http://aima.cs.berkeley.edu/}
+
+\bibitem{recommender_handbook}
+F. Ricci, L. Rokach, and B. Shapira, 
+\textit{Recommender Systems Handbook}, 3rd ed., 
+New York, NY: Springer, 2022. 
+[Online]. Available: \url{https://link.springer.com/book/10.1007/978-1-0716-2197-4}
+
+\bibitem{uml_standard}
+Object Management Group (OMG), 
+\textit{Unified Modeling Language (OMG UML) Specification, Version 2.5.1}, 
+2017. 
+[Online]. Available: \url{https://www.omg.org/spec/UML/2.5.1/}
+
+% --- Nghiên cứu về LLM, Prompt Engineering & Re-ranking ---
+
+\bibitem{transformer_vaswani}
+A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, and I. Polosukhin, 
+``Attention is All You Need,'' 
+in \textit{Advances in Neural Information Processing Systems (NeurIPS 2017)}, vol. 30, pp. 5998--6008, 2017. 
+[Online]. Available: \url{https://arxiv.org/abs/1706.03762}
+
+\bibitem{gemini_team}
+Gemini Team, Google, 
+``Gemini: A Family of Highly Capable Multimodal Models,'' 
+\textit{arXiv preprint arXiv:2312.11805}, 2023. 
+[Online]. Available: \url{https://arxiv.org/abs/2312.11805}
+
+\bibitem{prompt_wei}
+J. Wei, X. Wang, D. Schuurmans, M. Bosma, F. Xia, E. Chi, Q. V. Le, and D. Zhou, 
+``Chain-of-Thought Prompting Elicits Reasoning in Large Language Models,'' 
+in \textit{Advances in Neural Information Processing Systems (NeurIPS 2022)}, vol. 35, pp. 24824--24837, 2022. 
+[Online]. Available: \url{https://arxiv.org/abs/2201.11903}
+
+\bibitem{llm_reranking}
+W. Sun, L. Yan, X. Chen, S. Wang, H. Zhu, P. Ren, Z. Chen, and M. de Rijke, 
+``Is ChatGPT Good at Search? Investigating Large Language Models as Re-Ranking Agents,'' 
+in \textit{Proceedings of EMNLP 2023}, pp. 14918--14937, 2023. 
+[Online]. Available: \url{https://arxiv.org/abs/2304.09542}
+
+% --- Nghiên cứu Tâm lý học & Hành vi Tặng quà ---
+
+\bibitem{gift_psychology}
+Y. Zhang and N. Epley, 
+``The thought that counts in gift giving: Thinking of others' preferences vs. needs,'' 
+\textit{Journal of Experimental Psychology: General}, vol. 141, no. 4, pp. 667--673, 2012. 
+[Online]. Available: \url{https://doi.org/10.1037/a0027475}
+
+\bibitem{gift_recsys}
+R. Belk, 
+``Gift-Giving Behavior,'' 
+in \textit{Research in Marketing}, J. N. Sheth, Ed., vol. 2, Greenwich, CT: JAI Press, pp. 95--126, 1979. 
+[Online]. Available: \url{https://www.sciencedirect.com/science/article/abs/pii/B9780892320745500094}
+
+% --- Thang đo kiểm thử người dùng (Usability Testing) ---
+
+\bibitem{sus_brooke}
+J. Brooke, 
+``SUS: A 'quick and dirty' usability scale,'' 
+in \textit{Usability Evaluation in Industry}, P. W. Jordan et al., Eds., London: Taylor \& Francis, pp. 189--194, 1996. 
+[Online]. Available: \url{https://www.usability.gov/how-to-and-tools/methods/system-usability-scale.html}
+
+% --- Hạ tầng Cloud, CSDL phân tán & Nền tảng AI ---
+
+\bibitem{tidb_cloud_docs}
+PingCAP, 
+``TiDB Cloud Serverless Architecture and Distributed MySQL Compatibility Documentation,'' 
+2024. [Online]. Available: \url{https://docs.pingcap.com/tidbcloud/}
+
+\bibitem{google_ai_docs}
+Google AI for Developers, 
+``Gemini 1.5 \& 3.8 Flash API Documentation \& Structured Output Guides,'' 
+2024. [Online]. Available: \url{https://ai.google.dev/docs}
+
+\bibitem{groq_docs}
+Groq Inc., 
+``Groq LPU Inference Engine and Low-Latency API Documentation,'' 
+2024. [Online]. Available: \url{https://wow.groq.com/}
+
+\bibitem{openai_docs}
+OpenAI, 
+``OpenAI API Reference and Function Calling Documentation,'' 
+2024. [Online]. Available: \url{https://platform.openai.com/docs}
+
+\bibitem{react_docs}
+Meta Open Source, 
+``React 19: The Library for Web and Native User Interfaces,'' 
+2024. [Online]. Available: \url{https://react.dev}
+
+\bibitem{nodejs_docs}
+OpenJS Foundation, 
+``Node.js v20 LTS Technical Documentation,'' 
+2024. [Online]. Available: \url{https://nodejs.org/docs}
+
+\bibitem{selenium_docs}
+Software Freedom Conservancy, 
+``Selenium WebDriver Documentation,'' 
+2024. [Online]. Available: \url{https://www.selenium.dev/documentation}
+
+\end{thebibliography}
+
+% =========================================================
+% KẾT THÚC TÀI LIỆU
+% =========================================================
+
+\end{document}
